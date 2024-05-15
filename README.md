@@ -81,3 +81,16 @@ well. You should only use *one* of the list options in this case!
 $ itunes-data --artists --format json \
     ~/Music/iTunes/iTunes\ Music\ Library.xml > artists.json
 ```
+
+# When runninging locally, use ./cli.js to run ./cli.js to run 
+
+# Don't forget to do npm install first
+
+# compareiTunesLibrary.js
+
+This is a very crude tool to import playcounts from one library to another
+Take a look at the code to see how to run it.
+In general, run the itunes-data commands to export tracklist for old and new
+Then run the code to compare and update.
+It expects a version of noda-osa to be in parallel directory (with buffer value increased.)
+
