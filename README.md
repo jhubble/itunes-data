@@ -1,5 +1,8 @@
 # itunes-data
 
+Update 2024:
+Includes script to compare two itunes libraries and sync playcounts and last palyed. (see below)
+
 Export your iTunes library in easy-to-read formats! Install with npm:
 
 ```
@@ -94,3 +97,16 @@ In general, run the itunes-data commands to export tracklist for old and new
 Then run the code to compare and update.
 It expects a version of noda-osa to be in parallel directory (with buffer value increased.)
 
+Before running, create the track list (the library can sometimes have issues):
+1. Export new library
+
+node cli.js --tracks lib2.json ~/Library.xml
+cat lib2.json | jq . >newTracksNeat.json
+
+(repeat the same process to create oldTracksNeat.json)
+
+2. Run the script
+node compareiTunesLibrary.js
+
+It will compare the two different versions of JSON libraries.
+Playcounts and last palyed dates in the old that are greater than or newer than those in the new file will be updated in your library. (However, a final check will be done to verify that they are actually more up to date than what is in library.)
