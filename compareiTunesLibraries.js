@@ -132,9 +132,9 @@ const timesMatched = Object.keys(lastPlayedTimes).length;
 console.log("counts to update:",countsMatched);
 console.log("played times to update",timesMatched);
 	updateTracks(counts).then(() => {
-		console.log("update tracks done",counts);
+		console.log("update tracks done");
 		updateLastPlayed(lastPlayedTimes).then(() => {
-			console.log("update last played times done",lastPlayedTimes);
+			console.log("update last played times done");
 		});
 	});
 
