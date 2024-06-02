@@ -110,3 +110,12 @@ node compareiTunesLibrary.js
 
 It will compare the two different versions of JSON libraries.
 Playcounts and last palyed dates in the old that are greater than or newer than those in the new file will be updated in your library. (However, a final check will be done to verify that they are actually more up to date than what is in library.)
+
+# scrobblelist.pl
+
+Take a list of scrobbles from last.fm and convert it to something resembling library with counts and last played.
+Expect a tab delim file with Artist, Album, Track, Last Played Time
+
+use as :
+
+cat scrobbles.tsv | perl scrobblelist.pl >psuedoLibrary.json
