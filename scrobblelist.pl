@@ -11,6 +11,9 @@ while (<>) {
 	chomp;
 	s/\s*$//;
 	($a,$b,$c,$time) = split (/\t/);
+	$a =~ s/\\'//g;
+	$b =~ s/\\'//g;
+	$c =~ s/\\'//g;
 	# Ignore scrobbles with the bogus time
 	if ($time eq "01 Jan 1970 0:00") {
 		next;
