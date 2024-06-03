@@ -17,18 +17,21 @@ const oldLib = JSON.parse(fs.readFileSync(OLD_LIB));
 let matched = 0;
 const counts = {};
 const lastPlayedTimes = {};
-console.log("Looking for new songs with no playcount or lesser playcount");
+const ratings = {};
+console.log("Looking for new songs with no playcount or lesser playcount (and times and ratings)");
 newLib.forEach(song => {
 	if (song) {
 		const matches = oldLib.filter(oldSong => {
 			return (
-				oldSong['Play Count'] && (oldSong.Name === song.Name)
+				(oldSong.Name === song.Name)
 
 
 		// MOD: comment out Artist check to get "Various" fixes
 				&& (oldSong.Artist === song.Artist) 
 				&& (oldSong.Album  === song.Album)
 
+		// MOD: uncomment to only get old tracks that had playcount. (Commented so ratings can propagate regardless)
+		//		&& oldSong['Play Count']
 			);
 		});
 		if (matches.length) {
@@ -41,12 +44,17 @@ newLib.forEach(song => {
 			if (matches.length === 1) {
 				const newCount = matches[0]['Play Count'];
 				const newLastPlayed = matches[0]['Play Date UTC'];
-				if (!song['Play Count'] || newCount > song['Play Count']) {
+				const rating = matches[0]['Rating'];
+				const id = song['Persistent ID'];
+				if (newCount && (!song['Play Count'] || newCount > song['Play Count'])) {
 					counts[song['Persistent ID']] = newCount;
 				}
 				if (newLastPlayed && (!song['Play Date UTC'] || song['Play Date UTC'] < newLastPlayed)) {
 					lastPlayedTimes[song['Persistent ID']] = new Date(newLastPlayed);
-					console.log(`${song['Play Count']} [${song.Name}] - (${song.Album}) { ${song.Artist} } `);
+					console.log(`NEW SONG: ${song['Play Count']} [${song.Name}] - (${song.Album}) { ${song.Artist} } `);
+				}
+				if (!song['Rating'] && rating) {
+					ratings[id] = rating;
 				}
 			}
 		}
@@ -74,8 +82,6 @@ function osaPromise(fn, ...args) {
   const updateTracks = function(obj) {
 	  console.log("track:",obj);
       return osaPromise((counts) => {
-	      console.log("counts:",counts);
-	      console.log("tstringified",JSON.stringify(counts));
       var itunes = Application('Music');
       var tracks = itunes.libraryPlaylists[0].tracks;
 	      let updateCount = 0;
@@ -100,8 +106,7 @@ function osaPromise(fn, ...args) {
   const updateLastPlayed = function(lastPlayedTimes) {
 	  console.log("lastPlayed:",lastPlayedTimes);
       return osaPromise((lastPlayedTimes) => {
-	      console.log("LPT:",lastPlayedTimes);
-	      console.log("stringified",JSON.stringify(lastPlayedTimes));
+	      console.log("Last played times:",lastPlayedTimes);
       var itunes = Application('Music');
       var tracks = itunes.libraryPlaylists[0].tracks;
       let updateCount = 0;
@@ -125,16 +130,47 @@ function osaPromise(fn, ...args) {
     }); 
   }
 
+// This runs on the Music app. It gets all tracks, and then updates the ones we have
+  const updateRatings = function(ratings) {
+	  console.log("ratings:",ratings);
+      return osaPromise((ratings) => {
+      var itunes = Application('Music');
+      var tracks = itunes.libraryPlaylists[0].tracks;
+      let updateCount = 0;
+      for (var i = 0; i < tracks.length; i++) {
+        var track = tracks[i];
+        var id = track.persistentID();
+	if (ratings[id]) {
+		const oldRating = track.rating();
+		console.log("old rating:",track.rating());
+		if (!oldRating) {
+			track.rating = ratings[id];
+			updateCount++;
+		}
+	}
+      }
+      return updateCount;
+    }, ratings).then((s)=> {
+	    console.log("ratings:",s);
+    }); 
+  }
 
-console.log(matched);
+
+
+console.log("MATCHED:",matched);
 const countsMatched = Object.keys(counts).length;
 const timesMatched = Object.keys(lastPlayedTimes).length;
+const ratingsMatched = Object.keys(ratings).length;
 console.log("counts to update:",countsMatched);
 console.log("played times to update",timesMatched);
+console.log("ratings to update",ratingsMatched);
 	updateTracks(counts).then(() => {
 		console.log("update tracks done");
 		updateLastPlayed(lastPlayedTimes).then(() => {
 			console.log("update last played times done");
+			updateRatings(ratings).then(() => {
+				console.log("ratings update done");
+			});
 		});
 	});
 
