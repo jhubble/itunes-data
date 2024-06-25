@@ -34,12 +34,12 @@ const librarySongs = {};
 const noAlbumLibrary = {};
 const noArtistLibrary = {};
 
-const mapTree = {excludeArtists:{}, change: { noAlbum:{}, artistOnly:{}, other:[]}};
+const mapTree = {excludeArtists:{}, excludeAlbumTracks:{}, excludeAlbums: {}, change: { noAlbum:{}, artistOnly:{}, other:[]}};
 
 
 const outputKey = (key) => {
 	[artist,album,track] = key.split(/\t/);
-	const json = {artist:[artist],album:[album],track:[track]};
+	const json = {artist:[artist],album:[album],track:[track,track]};
 	return JSON.stringify(json);
 }
 const readTrackMap = () => {
@@ -55,8 +55,16 @@ const readTrackMap = () => {
 	}
 	if (trackMap.excludeArtists) {
 		trackMap.excludeArtists.forEach(artist => {
-			mapTree.excludeArtists[artist] = 1;
+			mapTree.excludeArtists[artist.toUpperCase()] = 1;
 		});
+	}
+	if (trackMap.excludeAlbums) {
+		trackMap.excludeAlbums.forEach(album => {
+			mapTree.excludeAlbums[album.toUpperCase()] = 1;
+		});
+	}
+	if (trackMap.excludeAlbumTracks) {
+		mapTree.excludeAlbumTracks = trackMap.excludeAlbumTracks;
 	}
 	if (trackMap.change) {
 		trackMap.change.forEach(rule => {
@@ -86,10 +94,15 @@ const readTrackMap = () => {
 const trackMap = readTrackMap();
 
 const isExcluded = (artist, album, name) => {
-	if (mapTree.excludeArtists[artist]) {
+	if (mapTree.excludeArtists[(artist||'').toUpperCase()]) {
 		return true;
 	}
-	if (trackMap.excludeAlbums && trackMap.excludeAlbums.indexOf(album) != -1) {
+	if (mapTree.excludeAlbumTracks[album]) {
+		if (mapTree.excludeAlbumTracks[album].indexOf(name) !== -1) {
+			return true;
+		}
+	}
+	if (mapTree.excludeAlbums[(album||'').toUpperCase()]) {
 		return true;
 	}
 	if (trackMap.excludeArtistAlbums) {
@@ -133,7 +146,18 @@ const mapTrack = (artist, album, name) => {
 	// Then "other" rules will be mapped
 	// Then rules that explicitly do not search for album will be mapped
 	// Matches are done in case insensitive manner
+	
 	const mapRule = (rule, artist, album, track) => {
+		const oartist = artist;
+		const oalbum = album;
+		const otrack = track;
+		const macro = (res,item) => {
+			res = res.replace('$current',item);
+			res = res.replace('$track',otrack);
+			res = res.replace('$artist',oartist);
+			res = res.replace('$album',oalbum);
+			return res;
+		};
 		if (
 			(!rule.artist || rule.artist[0] === null || rule.artist[0].toUpperCase() === artist.toUpperCase()) 
 			&&
@@ -141,27 +165,30 @@ const mapTrack = (artist, album, name) => {
 			&&
 			(!rule.album || rule.album[0] === null || rule.album[0].toUpperCase() === album.toUpperCase())
 		) {
-			//console.log("CHANGE",rule,artist,album,name);
+			DEBUG && console.log("CHANGE",rule,artist,album,name);
 			// Intentional != 
 			// If it is not set, or set to null or undefined, we use original value
 			// If it is a value (including blank) we will set
-			artist = (rule.artist?.[1] != null) ? rule.artist[1].replace('$current',artist) : artist;
-			album = (rule.album?.[1] != null) ? rule.album[1].replace('$current',album) : album;
-			name = (rule.track?.[1] != null) ? rule.track[1].replace('$current',name) : name;
+			artist = (rule.artist?.[1] != null) ? macro(rule.artist[1],artist) : artist;
+			album = (rule.album?.[1] != null) ? macro(rule.album[1],album) : album;
+			name = (rule.track?.[1] != null) ? macro(rule.track[1],name) : name;
 		}
 		return {artist,album,name};
 	}
 
 	if (mapTree.change.artistOnly[artist.toUpperCase()]) {
+		DEBUG && console.log("artist omly map for ",artist.toUpperCase());
 		({artist, album, name} = mapRule(mapTree.change.artistOnly[artist.toUpperCase()],artist, album, name));
 	}
 
+		DEBUG && console.log("Running generic map");
 	for (let i=0; i<mapTree.change.other.length; i++)  {
 		({artist, album, name} = mapRule(mapTree.change.other[i],artist, album, name));
 	}
 
 	const ruleKey = `${artist}\t\t${name}`.toUpperCase();
 	if (mapTree.change.noAlbum[ruleKey]) {
+		DEBUG && console.log("artist name map for ",ruleKey);
 		({artist, album, name} = mapRule(mapTree.change.noAlbum[ruleKey],artist, album, name));
 	}
 
@@ -202,7 +229,12 @@ const normalize = (artist,album,name) => {
 		//console.log("P",++count,artist,album,name);
 
 	if (DEBUG) {
-		if (!/Surf City/.test(name)) {
+		const f= "我落淚";
+		const re = new RegExp(f);
+		if (re.test(name)) {
+			console.log("Match:",name);
+		}
+		else {
 			return '';
 		}
 	}
@@ -288,7 +320,7 @@ Object.keys(scrobbleCounts)
 		if ((scrobbleCounts[index].count >= MIN_COUNT) && (scrobbleCounts[index].lastPlayedStamp > minStamp)) {
 			const noAlbum = scrobbleCounts[index].noAlbum;
 			const noArtist = scrobbleCounts[index].noArtist;
-			output = `${scrobbleCounts[index].count}\t${scrobbleCounts[index].lastPlayed}\t${index}\t${outputKey(index)}`;
+			output = `${scrobbleCounts[index].count}\t${scrobbleCounts[index].lastPlayed}\t${index}\t${outputKey(index)},`;
 			/*
 			if (noAlbumLibrary[noAlbum]) {
 				console.log(`OTHER ALBUM: (${noAlbumLibrary[noAlbum]}) ${output}`);
@@ -345,10 +377,10 @@ const showNeverScrobbled = () => {
 		.forEach(index => {
 			if (!librarySongs[index].scrobbles) {
 				if (librarySongs[index]['Total Time'] > 30000) {
-					console.log(`-${librarySongs[index]['Play Count']}\t${librarySongs[index]['Play Date UTC']}\t${index}\t${outputKey(index)}`);
+					console.log(`-${librarySongs[index]['Play Count']}\t${librarySongs[index]['Play Date UTC']}\t${index}\t${outputKey(index)},`);
 				}
 				else {
-					console.log(`^SHORT${librarySongs[index]['Play Count']}\t${librarySongs[index]['Play Date UTC']}\t${index}\t${outputKey(index)}`);
+					console.log(`^SHORT${librarySongs[index]['Play Count']}\t${librarySongs[index]['Play Date UTC']}\t${index}\t${outputKey(index)},`);
 				}
 			}
 		})
@@ -359,7 +391,7 @@ const showMatches = () => {
 	Object.keys(librarySongs)
 		.forEach(index => {
 			if (librarySongs[index].scrobbles) {
-				console.log(`+${librarySongs[index]['Play Count']}(${librarySongs[index].scrobbles})\t${librarySongs[index]['Play Date UTC']}\t${index}\t${outputKey(index)}`);
+				console.log(`+${librarySongs[index]['Play Count']}(${librarySongs[index].scrobbles})\t${librarySongs[index]['Play Date UTC']}\t${index}\t${outputKey(index)},`);
 			}
 		});
 }
