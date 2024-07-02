@@ -20,6 +20,7 @@ console.log(`Scrobbles: ${SCROBBLES}`);
 const lib = JSON.parse(fs.readFileSync(LIB));
 const scrobbles = JSON.parse(fs.readFileSync(SCROBBLES));
 console.error("starting");
+const trackCache = {};
 
 // Only include songs with at least MIN_COUNT scrobbles
 const MIN_COUNT = 1;
@@ -27,12 +28,20 @@ const MIN_COUNT = 1;
 // Only include songs with last place at least MAX_AGE months
 const MAX_AGE = 2000;
 
+let time = Date.now();
+const showDuration = (name) => {
+	console.error("DURATION",Date.now()-time, name);
+	time = Date.now();
+}
+
 // build the scrobble counts
 const scrobbleCounts = {};
 const allTracksWithoutAlbum = {};
 const librarySongs = {};
 const noAlbumLibrary = {};
 const noArtistLibrary = {};
+
+let count = 0;			
 
 const mapTree = {excludeArtists:{}, excludeAlbumTracks:{}, excludeAlbums: {}, change: { noAlbum:{}, artistOnly:{}, other:[]}};
 
@@ -79,7 +88,7 @@ const readTrackMap = () => {
 			}
 			else if (!rule.album && !rule.track && rule.artist && rule.artist[0]) {
 				if (mapTree.change.artistOnly[rule.artist[0].toUpperCase()]) {
-					console.error(artist," rule replacer already exists");
+					console.error(rule.artist[0]," rule replacer already exists");
 				}
 				mapTree.change.artistOnly[rule.artist[0].toUpperCase()] = rule;
 			}
@@ -91,7 +100,6 @@ const readTrackMap = () => {
 	return trackMap;
 }
 
-const trackMap = readTrackMap();
 
 const isExcluded = (artist, album, name) => {
 	if (mapTree.excludeArtists[(artist||'').toUpperCase()]) {
@@ -214,7 +222,6 @@ const modify = (artist, album, name) => {
 
 					
 
-let count = 0;			
 const normalize = (artist,album,name) => {
 	// Get a normalized artist-album-track key
 	// 1. First remove some common ones (temporarily, mainly for debugging)
@@ -228,6 +235,7 @@ const normalize = (artist,album,name) => {
 
 		//console.log("P",++count,artist,album,name);
 
+	const orig =  `${artist}\t${album}\t${name}`;
 	if (DEBUG) {
 		const f= "我落淚";
 		const re = new RegExp(f);
@@ -238,19 +246,22 @@ const normalize = (artist,album,name) => {
 			return '';
 		}
 	}
+	if (trackCache.hasOwnProperty(orig)) {
+		return trackCache[orig];
+	}
 	if (isExcluded(artist,album,name)) {
-		return '';
+		trackCache[orig] = '';
+		return trackCache[orig];
 	}
-	if (/Moana/.test(album)) {
-		return '';
+	// temp excludes
+	if (
+		/Exclude this/.test(album) 
+		||
+		(/^exclude that/.test(album) && /excludeartist/.test(artist))
+	) {
+		trackCache[orig] = '';
+		return trackCache[orig];
 	}
-	if (/^Here Come/.test(album) && /They Might Be Giants/.test(artist)) {
-		return '';
-	}
-	if (/^Frozen 2/.test(album)) {
-		return '';
-	}
-		//console.log("Post exclude",artist,album,name);
 
 
 	({artist, album, name} = stripText(artist,album,name));
@@ -266,79 +277,9 @@ const normalize = (artist,album,name) => {
 	songKey = `${(artist)}\t${(album)}\t${(name)}`;
 	noAlbumKey = `${(artist)}\t\t${(name)}`;
 	noArtistKey = `\t${(album)}\t${(name)}`;
-	return {songKey, noAlbumKey,noArtistKey};
+	trackCache[orig] = {songKey, noAlbumKey,noArtistKey};
+	return trackCache[orig];
 }
-scrobbles.forEach(scrobbleSection => {
-	scrobbleSection.track.forEach(scrobble => {
-		// just get actual scrobbles (not now playing type thing without dates)
-		if (scrobble.date) {
-			const {songKey, noAlbumKey, noArtistKey }  = normalize(scrobble.artist['#text'], scrobble.album['#text'], scrobble.name);
-			if (!allTracksWithoutAlbum[noAlbumKey]) {
-				allTracksWithoutAlbum[noAlbumKey] = {};
-			}
-			if (!allTracksWithoutAlbum[noAlbumKey][songKey]) {
-				allTracksWithoutAlbum[noAlbumKey][songKey] = { scrobbles: 0, playCount: 0};
-			}
-			if (songKey) {
-				if (!scrobbleCounts[songKey]) {
-					scrobbleCounts[songKey] = { count:0, lastPlayedStamp: (scrobble?.date.uts || 0)*1000, lastPlayed: scrobble?.date['#text'] ||'', noAlbum:noAlbumKey, noArtist: noArtistKey};
-				}
-				scrobbleCounts[songKey].count++;
-				allTracksWithoutAlbum[noAlbumKey][songKey].scrobbles++;
-			}
-		}
-		else {
-			// mostly "now playing" without date. Seems to be repeated
-	//		console.log("No Date:", scrobble?.name, scrobble?.['@attr']);
-		}
-	})
-});
-
-console.log(`Library songs: ${lib.length}`);
-console.log(`Scrobble songs: ${Object.keys(scrobbleCounts).length}`);
-lib.forEach(song => {
-	const {songKey, noAlbumKey, noArtistKey} = normalize(song.Artist,song.Album,song.Name);
-	librarySongs[songKey] = song;
-		if (!allTracksWithoutAlbum[noAlbumKey]) {
-			allTracksWithoutAlbum[noAlbumKey] = {};
-		}
-		if (!allTracksWithoutAlbum[noAlbumKey][songKey]) {
-			allTracksWithoutAlbum[noAlbumKey][songKey] = { scrobbles: 0, playCount: 0};
-		}
-		allTracksWithoutAlbum[noAlbumKey][songKey].playCount = song['Play Count'];
-	noAlbumLibrary[noAlbumKey] = songKey;
-	noArtistLibrary[noArtistKey] = songKey;
-});
-
-const minStamp = Date.now() - MAX_AGE*1000*60*60*24*(365/12);
-
-// show scrobbled but not in library
-Object.keys(scrobbleCounts)
-	.forEach(index => {
-	if (!librarySongs[index]) {
-		// Only show those with last played in time frame and minimum number of scrobbles
-		if ((scrobbleCounts[index].count >= MIN_COUNT) && (scrobbleCounts[index].lastPlayedStamp > minStamp)) {
-			const noAlbum = scrobbleCounts[index].noAlbum;
-			const noArtist = scrobbleCounts[index].noArtist;
-			output = `${scrobbleCounts[index].count}\t${scrobbleCounts[index].lastPlayed}\t${index}\t${outputKey(index)},`;
-			/*
-			if (noAlbumLibrary[noAlbum]) {
-				console.log(`OTHER ALBUM: (${noAlbumLibrary[noAlbum]}) ${output}`);
-			}
-			else if (noArtistLibrary[noArtist]) {
-				console.log(`OTHER ARTIST: (${noArtistLibrary[noArtist]}) ${output}`);
-			}
-			else {
-				*/
-				console.log(`${output}`);
-		//	}
-		}
-	}
-	else {
-		librarySongs[index].scrobbles = scrobbleCounts[index].count;
-	}
-});
-
 
 const showSuggestedMerges = ()=> {
 	Object.keys(allTracksWithoutAlbum).forEach(noAlbumKey => {
@@ -428,6 +369,83 @@ const showTopAlbumsAndArtists = () => {
 		console.log(artists[k],k);
 	});
 }
+
+const trackMap = readTrackMap();
+showDuration("readTrackMap");
+
+scrobbles.forEach(scrobbleSection => {
+	scrobbleSection.track.forEach(scrobble => {
+		// just get actual scrobbles (not now playing type thing without dates)
+		if (scrobble.date) {
+			const {songKey, noAlbumKey, noArtistKey }  = normalize(scrobble.artist['#text'], scrobble.album['#text'], scrobble.name);
+			if (!allTracksWithoutAlbum[noAlbumKey]) {
+				allTracksWithoutAlbum[noAlbumKey] = {};
+			}
+			if (!allTracksWithoutAlbum[noAlbumKey][songKey]) {
+				allTracksWithoutAlbum[noAlbumKey][songKey] = { scrobbles: 0, playCount: 0};
+			}
+			if (songKey) {
+				if (!scrobbleCounts[songKey]) {
+					scrobbleCounts[songKey] = { count:0, lastPlayedStamp: (scrobble?.date.uts || 0)*1000, lastPlayed: scrobble?.date['#text'] ||'', noAlbum:noAlbumKey, noArtist: noArtistKey};
+				}
+				scrobbleCounts[songKey].count++;
+				allTracksWithoutAlbum[noAlbumKey][songKey].scrobbles++;
+			}
+		}
+		else {
+			// mostly "now playing" without date. Seems to be repeated
+	//		console.log("No Date:", scrobble?.name, scrobble?.['@attr']);
+		}
+	})
+});
+
+showDuration("big loop");
+console.log(`Library songs: ${lib.length}`);
+console.log(`Scrobble songs: ${Object.keys(scrobbleCounts).length}`);
+lib.forEach(song => {
+	const {songKey, noAlbumKey, noArtistKey} = normalize(song.Artist,song.Album,song.Name);
+	librarySongs[songKey] = song;
+		if (!allTracksWithoutAlbum[noAlbumKey]) {
+			allTracksWithoutAlbum[noAlbumKey] = {};
+		}
+		if (!allTracksWithoutAlbum[noAlbumKey][songKey]) {
+			allTracksWithoutAlbum[noAlbumKey][songKey] = { scrobbles: 0, playCount: 0};
+		}
+		allTracksWithoutAlbum[noAlbumKey][songKey].playCount = song['Play Count'];
+	noAlbumLibrary[noAlbumKey] = songKey;
+	noArtistLibrary[noArtistKey] = songKey;
+});
+
+showDuration("lib Songs");
+const minStamp = Date.now() - MAX_AGE*1000*60*60*24*(365/12);
+
+// show scrobbled but not in library
+Object.keys(scrobbleCounts)
+	.forEach(index => {
+	if (!librarySongs[index]) {
+		// Only show those with last played in time frame and minimum number of scrobbles
+		if ((scrobbleCounts[index].count >= MIN_COUNT) && (scrobbleCounts[index].lastPlayedStamp > minStamp)) {
+			const noAlbum = scrobbleCounts[index].noAlbum;
+			const noArtist = scrobbleCounts[index].noArtist;
+			output = `${scrobbleCounts[index].count}\t${scrobbleCounts[index].lastPlayed}\t${index}\t${outputKey(index)},`;
+			/*
+			if (noAlbumLibrary[noAlbum]) {
+				console.log(`OTHER ALBUM: (${noAlbumLibrary[noAlbum]}) ${output}`);
+			}
+			else if (noArtistLibrary[noArtist]) {
+				console.log(`OTHER ARTIST: (${noArtistLibrary[noArtist]}) ${output}`);
+			}
+			else {
+				*/
+				console.log(`${output}`);
+		//	}
+		}
+	}
+	else {
+		librarySongs[index].scrobbles = scrobbleCounts[index].count;
+	}
+});
+
 
 
 //showTopAlbumsAndArtists();
