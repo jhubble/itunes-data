@@ -1178,7 +1178,11 @@
 		{"artist":"They Might Be Giants","album":"They Might Be Giants Podcast"},
 		{"artist":"They Might Be Giants","album":"They Might Be Giants: Here Come the ABCs"},
 		{"artist":"They Might Be Giants (Children's)","album":"", "comment":"exclude children's albums that are in separate library"},
-		{"artist":"Beowulf","album":"Beowulf"}
+		{"artist":"Beowulf","album":"Beowulf"},
+		{"artist":"Raffi","album":"Baby Beluga"},
+		{"artist":"Raffi","album":"The Corner Grocery Store"},
+		{"artist":"Billy Jonas","album":"What Kind of Cat Are You?"},
+		{"artist":"Ginny Reilly","album":"doodle lee do'in"}
 	],
 
 	"excludeAlbums": [
@@ -1226,7 +1230,8 @@
 		"Gen Conf 2001 Oct (Disc 5)",
 		"Gen Conf 2001 Oct Disk 6",
 		"Gen Conf 2001 Oct Disk 7",
-		"Gen Conf 2001 Oct Disk 8"
+		"Gen Conf 2001 Oct Disk 8",
+		"Puff the Magic Dragon"
 
 
 
@@ -1240,11 +1245,20 @@
 			"John chatter",
 			"john talk",
 			"John"
+		],
+		"":[
+			"Guitar Hymns"
 		]
 	},
 
 
+
+
 	"change": [
+
+		{"album":["city of angels","City of Angels"]},
+	        {"artist":["Goo Goo Dolls","The Goo Goo Dolls"]},
+		{"track":["Main Titles","$album Main Titles"]},
 		{"artist":["Johann Strauss Jr","Johann Strauss II"]},
 		{"artist":["J. Strauss, Jr.","Johann Strauss II"]},
 		{"artist":["Strauss, Johann jr","Johann Strauss II"]},
@@ -1260,6 +1274,7 @@
 		 "album":["RIOT!","Riot!"]
 		},
 		{"album":["Twilight","Twilight Original Motion Picture Soundtrack"]},
+		{"artist":["NewOrder","New Order"]},
 		{"album":["(The Best Of) New Order","(the best of) New Order"]},
 		{"track":["My Universe",null],
 		 "album":["Music of the Spheres",null],
@@ -1504,7 +1519,17 @@
 		{"album":[null,"Endless Summer"],"artist":["The Beach Boys","The Beach Boys"],"track":["Surfin' U.S.A.","Surfin' U.S.A."]},
 		{"album":[null,"Music of the Spheres"],"artist":["Coldplay","Coldplay"],"track":["Higher Power","Higher Power"]},
 		{"album":[null,"Something Just Like This"],"artist":["The Chainsmokers & Coldplay","The Chainsmokers & Coldplay"],"track":["Something Just Like This","Something Just Like This"]},
-		{"album":[null,"Singles (2016 Remaster)"],"artist":["New Order","New Order"],"track":["Ceremony (Version 1) [2016 Remaster]","Ceremony (Version 1) [2016 Remaster]"]},
+		{"album":[null,"Singles"],"artist":["New Order","New Order"],"track":["Ceremony (Version 1) [2016 Remaster]","Ceremony (Version 1)"]},
+		{"artist":["New Order"],"album":["Singles (2016 Remaster)"],"track":["Ceremony - Version 1; 2016 Remaster","Ceremony (Version 1)"]},
+		{"album":[null,"Substance"],"artist":["New Order","New Order"],"track":["Ceremony","Ceremony"]},
+		{"album":[null,"Singles"],"artist":["New Order","New Order"],"track":["Ceremony - Version 1; 2016 Remaster","Ceremony (Version 1)"]},
+		{"album":[null,"Singles"],"artist":["New Order","New Order"],"track":["Ceremony (version 1)","Ceremony (version 1)"]},
+		{"artist":["New Order"],"album":["Singles"],"track":["Ceremony (version 1)","Ceremony (Version 1)"]},
+		{"artist":["New Order"],"album":["TOTAL","Singles"],"track":["Ceremony (2011 Total version)","Ceremony (version 1)"]},
+		{"artist":["New Order"],"album":["TOTAL","Singles"],"track":["Ceremony - 2011 Total version","Ceremony (version 1)"]},
+		{"artist":["christian cruz","New Order"],"album":[null,"Substance"],"track":["New Order (Substance; 1987) - Ceremony","Ceremony"]},
+		{"artist":["Eric Thompson","New Order"],"album":[null,"Singles"],"track":["New Order - Ceremony (Original version) + Lyrics","Ceremony (version 1)"]},
+
                 {"album":["Coldplay Stade de France Music of the Spheres",null],"artist":["Coldplay","Coldplay"],"track":[null,"$current (live in France)"]},
 		{"album":[null,"A Rush of Blood to the Head"],"artist":["Coldplay","Coldplay"],"track":["Clocks","Clocks"]},
 		{"album":[null,"Viva la Vida or Death and All His Friends"],"artist":["Coldplay","Coldplay"],"track":["Viva la Vida","Viva la Vida"]},
@@ -1648,7 +1673,6 @@
 		{"album":[null,"Millennium"],"artist":["Backstreet Boys","Backstreet Boys"],"track":["I Want It That Way","I Want It That Way"]},
 		{"album":[null,"Midnight Memories"],"artist":["One Direction","One Direction"],"track":["Story of My Life","Story of My Life"]},
 		{"album":[null,"Hey, Soul Sister"],"artist":["Train","Train"],"track":["Hey, Soul Sister","Hey, Soul Sister"]},
-		{"album":[null,"Substance"],"artist":["New Order","New Order"],"track":["Ceremony","Ceremony"]},
 		{"album":[null,"Nevermind"],"artist":["Nirvana","Nirvana"],"track":["Come as You Are","Come as You Are"]},
 		{"album":[null,"Heavy metal marching band"],"artist":["Arrangers Publishing Company","Arrangers Publishing Company"],"track":["San Antonio Rose","San Antonio Rose"]},
 		{"album":[null,"1,039/Smoothed Out Slappy Hours"],"artist":["Green Day","Green Day"],"track":["16","16"]},
@@ -1684,14 +1708,12 @@
 		{"album":[null,"The Piano Guys"],"artist":["The Piano Guys","The Piano Guys"],"track":["Cello Wars","Cello Wars"]},
 		{"album":[null,"The Piano Guys"],"artist":["The Piano Guys","The Piano Guys"],"track":["What Makes You Beautiful","What Makes You Beautiful"]},
 		{"album":[null,"The Grand Illusion - Live"],"artist":["Styx","Styx"],"track":["Come Sail Away (live)","Come Sail Away (live)"]},
-		{"album":[null,"Top Gun"],"artist":["Harold Faltermeyer & Steve Stevens","Harold Faltermeyer & Steve Stevens"],"track":["Top Gun Anthem","Top Gun Anthem"]},
 		{"artist":["Dave Matthews Band"],"album":["Live in Chicago 12-19-98 at the United Center"],"track":[null,"$current (live)"]},
 		{"album":[null,"Before These Crowded Streets"],"artist":["Dave Matthews Band","Dave Matthews Band"],"track":["Don't Drink the Water","Don't Drink the Water"]},
 		{"album":[null,"Pet Sounds"],"artist":["The Beach Boys","The Beach Boys"],"track":["Wouldn't It Be Nice","Wouldn't It Be Nice"]},
 		{"album":[null,"Day & Age"],"artist":["The Killers","The Killers"],"track":["Human","Human"]},
 		{"album":[null,"Kerplunk!"],"artist":["Green Day","Green Day"],"track":["Who Wrote Holden Caulfield?","Who Wrote Holden Caulfield?"]},
 		{"album":[null,"Spiceworld"],"artist":["Spice Girls","Spice Girls"],"track":["Viva Forever","Viva Forever"]},
-		{"album":[null,"City of Angels"],"artist":["Goo Goo Dolls","Goo Goo Dolls"],"track":["Iris","Iris"]},
 		{"album":[null,"Welcome to Wherever You Are"],"artist":["INXS","INXS"],"track":["Beautiful Girl","Beautiful Girl"]},
 		{"album":[null,"Information Society"],"artist":["Information Society","Information Society"],"track":["Lay All Your Love on Me","Lay All Your Love on Me"]},
 		{"album":[null,"All We Know Is Falling"],"artist":["Paramore","Paramore"],"track":["Never Let This Go","Never Let This Go"]},
@@ -1799,7 +1821,14 @@
 		{"album":[null,"The Piano Guys"],"artist":["The Piano Guys","The Piano Guys"],"track":["Rolling in the Deep","Rolling in the Deep"]},
 		{"album":[null,"Benny Goodman and His Orchestra"],"artist":["Benny Goodman","Benny Goodman"],"track":["Sing, Sing, Sing (With a Swing)","Sing, Sing, Sing (With a Swing)"]},
 		{"album":[null,"Signals"],"artist":["Rush","Rush"],"track":["Subdivisions","Subdivisions"]},
+		{"artist":["New Order"],"album":["Live at Bestival 2012"],"track":[null,"$current (live)"]},
+		{"album":[null,"Krafty"],"artist":["New Order","New Order"],"track":["Krafty - DJ Dan Vocal Remix","Krafty - DJ Dan Vocal Remix"]},
+		{"album":[null,"Waiting for the Sirens' Call"],"artist":["New Order","New Order"],"track":["Krafty - Single Edit","Krafty"]},
+		{"album":[null,"Digging in the Crates: 2005 Volume 1"],"artist":["New Order","New Order"],"track":["Krafty - Morel's Pink Noise Vocal Mix","Krafty - Morel's Pink Noise Vocal Mix"]},
 		{"album":[null,"Waiting for the Sirens' Call"],"artist":["New Order","New Order"],"track":["Krafty","Krafty"]},
+		{"artist":["New Order"],"album":["TOTAL","Waiting for the Sirens' Call"],"track":["Krafty - 2011 Total version","Krafty"]},
+		{"artist":["NewOrder","New Order"],"album":[null,"Waiting for the Sirens' Call"],"track":["New Order - Krafty (Official Music Video)","Krafty"]},
+		{"artist":["New Order"],"album":["Singles","Waiting for the Sirens' Call"],"track":["Krafty - Single Edit; 2015 Remaster","Krafty"]},
 		{"album":[null,"The Pick Volume 1"],"artist":["Styx","Styx"],"track":["Mr Roboto","Mr Roboto"]},
 		{"album":[null,"The Essential \"Weird Al\" Yankovic"],"artist":["\"Weird Al\" Yankovic","\"Weird Al\" Yankovic"],"track":["The Saga Begins (Lyrical Adaption of \"American Pie\")","The Saga Begins (Lyrical Adaption of \"American Pie\")"]},
 		{"album":[null,"Hunting High and Low"],"artist":["a-ha","a-ha"],"track":["Take on Me","Take on Me"]},
@@ -1839,7 +1868,6 @@
 		{"album":[null,"The Singles 1986-1998"],"artist":["Depeche Mode","Depeche Mode"],"track":["Only When I Lose Myself","Only When I Lose Myself"]},
 		{"album":[null,"The Saint"],"artist":["Orbital","Orbital"],"track":["The Saint Theme","The Saint Theme"]},
 		{"album":[null,"Information Society"],"artist":["Information Society","Information Society"],"track":["Over the Sea","Over the Sea"]},
-		{"album":[null,"Top Gun"],"artist":["Kenny Loggins","Kenny Loggins"],"track":["Danger Zone","Danger Zone"]},
 		{"album":[null,"Fey"],"artist":["Fey","Fey"],"track":["Gatos En el Balcón","Gatos en el Balcón"]},
 		{"album":[null,"The Essential Kenny Loggins"],"artist":["Kenny Loggins","Kenny Loggins"],"track":["Footloose","Footloose"]},
 		{"album":[null,"You're Going to Make It"],"artist":["Mates of State","Mates of State"],"track":["I Want to Run","I Want to Run"]},
@@ -1883,6 +1911,7 @@
 		{"album":[null,"Greatest Hits"],"artist":["Heart","Heart"],"track":["Barracuda","Barracuda"]},
 		{"album":[null,"The No.1 Movies Album"],"artist":["Blondie","Blondie"],"track":["Call Me","Call Me"]},
 		{"album":[null,"Thr Best of Boston Pops (Millennium Collection)"],"artist":["John Williams: Boston Pops Orchestra","John Williams: Boston Pops Orchestra"],"track":["Main Title","Main Title"]},
+		{"artist":["John Williams"],"album":["The Best of      Boston Pops (Millennium Collection)"],"track":["Main title (Star Wars)","Main title (Star Wars)"]},
 		{"album":[null,"Reggatta de Blanc"],"artist":["The Police","The Police"],"track":["Message in a Bottle","Message in a Bottle"]},
 		{"album":[null,"More Songs About Buildings and Food"],"artist":["Talking Heads","Talking Heads"],"track":["Take Me to the River","Take Me to the River"]},
 		{"album":[null,"Gold"],"artist":["Rush","Rush"],"track":["Xanadu","Xanadu"]},
@@ -1935,7 +1964,6 @@
 		{"album":[null,"The Piano Guys"],"artist":["The Piano Guys","The Piano Guys"],"track":["Peponi (Paradise)","Peponi (Paradise)"]},
 		{"album":[null,"Truly Madly Completely - the Best of Savage Garden"],"artist":["Savage Garden","Savage Garden"],"track":["I Want You","I Want You"]},
 		{"album":[null,"Playlist: the Very Best of Soul Asylum"],"artist":["Soul Asylum","Soul Asylum"],"track":["Runaway Train","Runaway Train"]},
-		{"album":[null,"Greatest Hits Volume One - the Singles"],"artist":["The Goo Goo Dolls","The Goo Goo Dolls"],"track":["Iris","Iris"]},
 		{"album":[null,"X&Y"],"artist":["Coldplay","Coldplay"],"track":["Twisted Logic","Twisted Logic"]},
 		{"album":[null,"X&Y"],"artist":["Coldplay","Coldplay"],"track":["The Hardest Part","The Hardest Part"]},
 		{"album":[null,"Greatest Hits I"],"artist":["Queen","Queen"],"track":["We Are the Champions","We Are the Champions"]},
@@ -1996,7 +2024,6 @@
 		{"album":[null,"The Essential Weird Al Yankovic"],"artist":["\"Weird Al\" Yankovic","\"Weird Al\" Yankovic"],"track":["Don't Download This Song","Don't Download This Song"]},
 		{"album":[null,"The Essential \"Weird Al\" Yankovic"],"artist":["\"Weird Al\" Yankovic","\"Weird Al\" Yankovic"],"track":["It's All About the Pentiums (An adaptation of \"It's All About the Benjamins\" by Puff Daddy)","It's All About the Pentiums (An adaptation of \"It's All About the Benjamins\" by Puff Daddy)"]},
 		{"album":[null,"Rush, etc."],"artist":["Mr. Mister","Mr. Mister"],"track":["Kyrie","Kyrie"]},
-		{"album":[null,"Top Gun - Motion Picture Soundtrack (Special Expanded Edition)"],"artist":["Harold Faltermeyer & Steve Stevens","Harold Faltermeyer & Steve Stevens"],"track":["Top Gun Anthem (From \"Top Gun\" Original Soundtrack)","Top Gun Anthem (From \"Top Gun\" Original Soundtrack)"]},
 		{"album":[null,"Veggie Tunes"],"artist":["Veggie Tales","Veggie Tales"],"track":["King Darius Suite","King Darius Suite"]},
 		{"album":[null,"Bleed American"],"artist":["Jimmy Eat World","Jimmy Eat World"],"track":["Sweetness","Sweetness"]},
 		{"album":[null,"Veggie Tunes"],"artist":["Veggie Tales","Veggie Tales"],"track":["We've Got Some News","We've Got Some News"]},
@@ -2009,6 +2036,7 @@
 		{"album":[null,"Wonders"],"artist":["The Piano Guys","The Piano Guys"],"track":["Let It Go","Let It Go"]},
 		{"album":[null,"Thriller"],"artist":["Michael Jackson","Michael Jackson"],"track":["Beat It","Beat It"]},
 		{"album":[null,"Napoleon Dynamite"],"artist":["Bow Wow Wow","Bow Wow Wow"],"track":["I Want Candy","I Want Candy"]},
+		{"album":[null,"Napoleon Dynamite"],"artist":["Bow Wow Wow","Bow Wow Wow"],"track":["I Want Candy (Re-Recorded)","I Want Candy"]},
 		{"album":[null,"Urban Hymns"],"artist":["The Verve","The Verve"],"track":["Bitter Sweet Symphony","Bitter Sweet Symphony"]},
 		{"album":[null,"Pop"],"artist":["Erasure","Erasure"],"track":["Sometimes","Sometimes"]},
 		{"album":[null,"Still Not Getting Any"],"artist":["Simple Plan","Simple Plan"],"track":["Welcome to My Life","Welcome to My Life"]},
@@ -2044,7 +2072,6 @@
 		{"album":[null,"Romeo + Juliet"],"artist":["The Cardigans","The Cardigans"],"track":["Lovefool","Lovefool"]},
 		{"album":[null,"Americana"],"artist":["The Offspring","The Offspring"],"track":["Pretty Fly (For a White Guy)","Pretty Fly (For a White Guy)"]},
 		{"album":[null,"Greatest Hits"],"artist":["Journey","Journey"],"track":["Separate Ways (Worlds Apart)","Separate Ways (Worlds Apart)"]},
-		{"album":[null,"Top Gun"],"artist":["Kenny Loggins","Kenny Loggins"],"track":["Playing with the Boys","Playing with the Boys"]},
 		{"album":[null,"The Best of Tears for Fears - 20th Century Masters, the Millennium Collection"],"artist":["Tears for Fears","Tears for Fears"],"track":["Sowing the Seeds of Love","Sowing the Seeds of Love"]},
 		{"album":[null,"Greatest Hits"],"artist":["Journey","Journey"],"track":["Open Arms","Open Arms"]},
 		{"album":[null,"Uncharted"],"artist":["The Piano Guys","The Piano Guys"],"track":["The Jungle Book / Sarabande","The Jungle Book / Sarabande"]},
@@ -2073,11 +2100,9 @@
 		{"album":[null,"Closer"],"artist":["Josh Groban","Josh Groban"],"track":["You Raise Me Up","You Raise Me Up"]},
 		{"album":[null,"Spiceworld"],"artist":["Spice Girls","Spice Girls"],"track":["Stop","Stop"]},
 		{"album":[null,"Black Holes and Revelations"],"artist":["Muse","Muse"],"track":["Starlight","Starlight"]},
-		{"album":[null,"Krafty"],"artist":["New Order","New Order"],"track":["Krafty - Single Edit","Krafty - Single Edit"]},
 		{"album":[null,"Low-Life"],"artist":["New Order","New Order"],"track":["Love Vigilantes","Love Vigilantes"]},
 		{"album":[null,"Greatest"],"artist":["Duran Duran","Duran Duran"],"track":["Hungry Like the Wolf","Hungry Like the Wolf"]},
 		{"album":[null,"Gonna Make You Sweat"],"artist":["C+C Music Factory","C+C Music Factory"],"track":["Gonna Make You Sweat (Everybody Dance Now)","Gonna Make You Sweat (Everybody Dance Now)"]},
-		{"album":[null,"Pretty in Pink"],"artist":["New Order","New Order"],"track":["Shell-Shock","Shell-Shock"]},
 		{"album":[null,"The Hurting"],"artist":["Tears for Fears","Tears for Fears"],"track":["Mad World","Mad World"]},
 		{"album":[null,"The Lion King: Original Motion Picture Soundtrack"],"artist":["Elton John","Elton John"],"track":["I Just Can't Wait to Be King","I Just Can't Wait to Be King"]},
 		{"album":[null,"Face to Face"],"artist":["Westlife","Westlife"],"track":["You Raise Me Up","You Raise Me Up"]},
@@ -2116,7 +2141,6 @@
 		{"album":[null,"Prague Philharmonic Orchestra, the Science Fiction Album"],"artist":["John Williams","John Williams"],"track":["Star Wars, Episode V: the Empire Strikes Back, Film Score","Star Wars, Episode V: the Empire Strikes Back, Film Score"]},
 		{"album":[null,"Sand in the Vaseline"],"artist":["Talking Heads","Talking Heads"],"track":["Road to Nowhere","Road to Nowhere"]},
 		{"album":[null,"Winter Wonderland - Single of the Week"],"artist":["Tony Bennett","Tony Bennett"],"track":["Winter Wonderland","Winter Wonderland"]},
-		{"album":[null,"John Williams, Jurassic Park: Original Motion Picture Soundtrack"],"artist":["John Williams","John Williams"],"track":["Jurassic Park, Film Score","Jurassic Park, Film Score"]},
 		{"album":[null,"Gary Kettel, Batman Begins"],"artist":["Hans Zimmer & James Newton Howard","Hans Zimmer & James Newton Howard"],"track":["Batman Begins, film score","Batman Begins, film score"]},
 		{"album":[null,"Transformers: Revenge of the Fallen (Film Score)"],"artist":["Steve Jablonsky","Steve Jablonsky"],"track":["Transformers: Revenge of the Fallen, Film Score","Transformers: Revenge of the Fallen, Film Score"]},
 		{"album":["Transformers: Revenge of the Fallen - the Album","Transformers: Revenge of the Fallen"]},
@@ -2375,10 +2399,6 @@
 		{"album":[null,"Chorus"],"artist":["Erasure","Erasure"],"track":["Siren Song","Siren Song"]},
 		{"album":[null,"Chorus"],"artist":["Erasure","Erasure"],"track":["Waiting for the Day","Waiting for the Day"]},
 		{"album":[null,"Christmas With Nat King Cole"],"artist":["Nat King Cole","Nat King Cole"],"track":["Hark! the Herald Angels Sing","Hark! the Herald Angels Sing"]},
-		{"album":[null,"City of Angels"],"artist":["Alanis Morissette","Alanis Morissette"],"track":["Uninvited","Uninvited"]},
-		{"album":[null,"City of Angels"],"artist":["Jude","Jude"],"track":["I Know","I Know"]},
-		{"album":[null,"City of Angels"],"artist":["Paula Cole","Paula Cole"],"track":["Feelin' Love","Feelin' Love"]},
-		{"album":[null,"City of Angels"],"artist":["Sarah McLachlan","Sarah McLachlan"],"track":["Angel","Angel"]},
 		{"album":[null,"Classic Christmas Favorites"],"artist":["Nat King Cole","Nat King Cole"],"track":["Deck the Halls","Deck the Halls"]},
 		{"album":[null,"Classic Piano Hymns Vol. 1"],"artist":["Steven Anderson","Steven Anderson"],"track":["All Creatures of Our God and King","All Creatures of Our God and King"]},
 		{"album":[null,"Classic Piano Hymns Vol. 1"],"artist":["Steven Anderson","Steven Anderson"],"track":["I Heard the Voice of Jesus","I Heard the Voice of Jesus"]},
@@ -2431,7 +2451,6 @@
 		{"album":[null,"Deliver"],"artist":["The Mamas and the Papas","The Mamas and the Papas"],"track":["My Girl","My Girl"]},
 		{"album":[null,"Desireless"],"artist":["Eagle-Eye Cherry","Eagle-Eye Cherry"],"track":["Save Tonight","Save Tonight"]},
 		{"album":[null,"Diana Ross Presents the Jackson 5"],"artist":["The Jackson 5","The Jackson 5"],"track":["I Want You Back","I Want You Back"]},
-		{"album":[null,"Digging in the Crates: 2005 Volume 1"],"artist":["New Order","New Order"],"track":["Krafty - Morel's Pink Noise Vocal Mix","Krafty - Morel's Pink Noise Vocal Mix"]},
 		{"album":[null,"Dire Straits"],"artist":["Dire Straits","Dire Straits"],"track":["Sultans of Swing","Sultans of Swing"]},
 		{"album":[null,"Dirty Dancing"],"artist":["Bill Medley","Bill Medley"],"track":["(I've Had) the Time of My Life","(I've Had) the Time of My Life"]},
 		{"album":[null,"Does This Look Infected?"],"artist":["Sum 41","Sum 41"],"track":["Still Waiting","Still Waiting"]},
@@ -2879,7 +2898,6 @@
 		{"album":[null,"Simple Plan"],"artist":["Simple Plan","Simple Plan"],"track":["I Can Wait Forever","I Can Wait Forever"]},
 		{"album":[null,"Simple Plan"],"artist":["Simple Plan","Simple Plan"],"track":["Save You","Save You"]},
 		{"album":[null,"Singles (2016 Remaster)"],"artist":["New Order","New Order"],"track":["Blue Monday - 2016 Remaster","Blue Monday - 2016 Remaster"]},
-		{"album":[null,"Singles (2016 Remaster)"],"artist":["New Order","New Order"],"track":["Ceremony - Version 1; 2016 Remaster","Ceremony - Version 1; 2016 Remaster"]},
 		{"album":[null,"Singles 93-03"],"artist":["The Chemical Brothers","The Chemical Brothers"],"track":["Block Rockin' Beats","Block Rockin' Beats"]},
 		{"album":[null,"Singles 93-03"],"artist":["The Chemical Brothers","The Chemical Brothers"],"track":["Get Yourself High","Get Yourself High"]},
 		{"album":[null,"Singles 93-03"],"artist":["The Chemical Brothers","The Chemical Brothers"],"track":["Leave Home","Leave Home"]},
@@ -2946,6 +2964,11 @@
 		{"album":[null,"Sublime"],"artist":["Sublime","Sublime"],"track":["Santeria","Santeria"]},
 		{"album":[null,"Substance"],"artist":["New Order","New Order"],"track":["Confusion","Confusion"]},
 		{"album":[null,"Substance"],"artist":["New Order","New Order"],"track":["Shellshock","Shellshock"]},
+		{"artist":["New Order"],"album":["Singles","Substance"],"track":["Shellshock - 7\" Edit; 2015 Remaster","Shellshock"], "note":"This is shorter, but still grouping it"},
+		{"artist":["New Order"],"album":["Singles","Substance"],"track":["Shellshock (7\" Edit)","Shellshock"], "note":"This is shorter, but still grouping it"},
+		{"artist":["New Order"],"album":["Low-Life","Substance"],"track":["Shellshock (Substance Edit)","Shellshock"]},
+		{"artist":["New Order"],"album":["Substance"],"track":["Shellshock (John Robie Remix) [Substance Edit]","Shellshock"]},
+		{"album":[null,"Substance"],"artist":["New Order","New Order"],"track":["Shell-Shock","Shellshock"], "note":"Pretty and pink and substance versions are a bit different, but fairly close"},
 		{"album":[null,"Substance"],"artist":["New Order","New Order"],"track":["State of the Nation","State of the Nation"]},
 		{"album":[null,"Sugar Ray"],"artist":["Sugar Ray","Sugar Ray"],"track":["When It's Over","When It's Over"]},
 		{"album":[null,"Sugar Tax"],"artist":["Orchestral Manoeuvres in the Dark","Orchestral Manoeuvres in the Dark"],"track":["Pandora's Box","Pandora's Box"]},
@@ -3202,11 +3225,6 @@
 		{"album":[null,"Tiffany"],"artist":["Tiffany","Tiffany"],"track":["I Think We're Alone Now","I Think We're Alone Now"]},
 		{"album":[null,"Titanic"],"artist":["James Horner","James Horner"],"track":["Hymn to the Sea","Hymn to the Sea"]},
 		{"album":[null,"To the Extreme"],"artist":["Vanilla Ice","Vanilla Ice"],"track":["Ice Ice Baby","Ice Ice Baby"]},
-		{"album":[null,"Top Gun - Motion Picture Soundtrack (Special Expanded Edition)"],"artist":["Harold Faltermeyer","Harold Faltermeyer"],"track":["Top Gun Anthem","Top Gun Anthem"]},
-		{"album":[null,"Top Gun"],"artist":["Berlin","Berlin"],"track":["Take My Breath Away","Take My Breath Away"]},
-		{"album":[null,"Top Gun"],"artist":["Cheap Trick","Cheap Trick"],"track":["Mighty Wings","Mighty Wings"]},
-		{"album":[null,"Top Gun"],"artist":["Marietta","Marietta"],"track":["Destination Unknown","Destination Unknown"]},
-		{"album":[null,"Top Gun: Maverick (Music from the Motion Picture)"],"artist":["OneRepublic","OneRepublic"],"track":["I Ain't Worried","I Ain't Worried"]},
 		{"album":[null,"Top Ten Hits (Disc 1)"],"artist":["Elvis Presley","Elvis Presley"],"track":["Heartbreak Hotel","Heartbreak Hotel"]},
 		{"album":[null,"Top Ten Hits (Disc 1)"],"artist":["Elvis Presley","Elvis Presley"],"track":["Hound Dog","Hound Dog"]},
 		{"album":[null,"Top Ten Hits (Disc 1)"],"artist":["Elvis Presley","Elvis Presley"],"track":["Love Me","Love Me"]},
@@ -3264,7 +3282,6 @@
 		{"album":[null,"Women At the Well"],"artist":["Kenneth Cope and the Breakaways","Kenneth Cope and the Breakaways"],"track":["Go in Peace","Go in Peace"]},
 		{"album":[null,"Wrong Way Up"],"artist":["Eno / Cale","Eno / Cale"],"track":["Been There Done That","Been There Done That"]},
 		{"album":[null,"X&Y"],"artist":["Coldplay","Coldplay"],"track":["What If","What If"]},
-		{"album":[null,"Yesterday, Today, Tomorrow - the Greatest Hits of Kenny Loggins"],"artist":["Kenny Loggins","Kenny Loggins"],"track":["Danger Zone (From \"Top Gun\" Original Soundtrack)","Danger Zone (From \"Top Gun\" Original Soundtrack)"]},
 		{"album":[null,"You Are My Little Bird"],"artist":["Elizabeth Mitchell","Elizabeth Mitchell"],"track":["Little Bird, Little Bird","Little Bird, Little Bird"]},
 		{"album":[null,"You Deliver Me"],"artist":["Selah","Selah"],"track":["How Deep the Father's Love for Us","How Deep the Father's Love for Us"]},
 		{"album":[null,"\"Weird Al\" Yankovic"],"artist":["\"Weird Al\" Yankovic","\"Weird Al\" Yankovic"],"track":["Gotta Boogie","Gotta Boogie"]},
@@ -3478,7 +3495,6 @@
 		{"album":[null,"Greatest Hits III"],"artist":["Queen","Queen"],"track":["Princes of the Universe","Princes of the Universe"]},
 		{"album":[null,"Greatest Hits Vol. II"],"artist":["Elton John","Elton John"],"track":["Lucy in the Sky With Diamonds","Lucy in the Sky With Diamonds"]},
 		{"album":[null,"Greatest Hits Vol. II"],"artist":["Elton John","Elton John"],"track":["Tiny Dancer","Tiny Dancer"]},
-		{"album":[null,"Greatest Hits Volume One - the Singles"],"artist":["The Goo Goo Dolls","The Goo Goo Dolls"],"track":["Slide","Slide"]},
 		{"album":[null,"Greatest Hits"],"artist":["Debbie Gibson","Debbie Gibson"],"track":["Lost in Your Eyes","Lost in Your Eyes"]},
 		{"album":[null,"Greatest Hits"],"artist":["Elton John","Elton John"],"track":["Crocodile Rock","Crocodile Rock"]},
 		{"album":[null,"Greatest Hits"],"artist":["Elton John","Elton John"],"track":["Rocket Man","Rocket Man"]},
@@ -3846,10 +3862,6 @@
 		{"album":[null,"Thriller 25 Super Deluxe Edition"],"artist":["Michael Jackson","Michael Jackson"],"track":["Billie Jean - Single Version","Billie Jean - Single Version"]},
 		{"album":[null,"Time Out"],"artist":["The Dave Brubeck Quartet","The Dave Brubeck Quartet"],"track":["Take Five","Take Five"]},
 		{"album":[null,"Titanic: Music As Heard on the Fateful Voyage"],"artist":["The White Star Orchestra","The White Star Orchestra"],"track":["The Mosquito's Parade","The Mosquito's Parade"]},
-		{"album":[null,"Top Gun"],"artist":["Larry Greene","Larry Greene"],"track":["Through the Fire","Through the Fire"]},
-		{"album":[null,"Top Gun"],"artist":["Loverboy","Loverboy"],"track":["Heaven in Your Eyes","Heaven in Your Eyes"]},
-		{"album":[null,"Top Gun"],"artist":["Teena Marie","Teena Marie"],"track":["Lead Me On","Lead Me On"]},
-		{"album":[null,"Top Gun: Maverick (Music from the Motion Picture)"],"artist":["Harold Faltermeyer, Lady Gaga, Hans Zimmer & Lorne Balfe","Harold Faltermeyer, Lady Gaga, Hans Zimmer & Lorne Balfe"],"track":["Top Gun Anthem","Top Gun Anthem"]},
 		{"album":[null,"Top Ten Hits (Disc 1)"],"artist":["Elvis Presley","Elvis Presley"],"track":["All Shook Up","All Shook Up"]},
 		{"album":[null,"Top Ten Hits (Disc 1)"],"artist":["Elvis Presley","Elvis Presley"],"track":["Too Much","Too Much"]},
 		{"album":[null,"Top Ten Hits (Disc 2)"],"artist":["Elvis Presley","Elvis Presley"],"track":["Bossa Nova Baby","Bossa Nova Baby"]},
@@ -3887,7 +3899,6 @@
 		{"album":[null,"Waiting for the Sirens' Call"],"artist":["New Order","New Order"],"track":["I Told You So","I Told You So"]},
 		{"album":[null,"Warning"],"artist":["Green Day","Green Day"],"track":["Warning","Warning"]},
 		{"album":[null,"We Gather Together: 14 Thanksgiving Hymns"],"artist":["Craig Duncan","Craig Duncan"],"track":["How Great Thou Art","How Great Thou Art"]},
-		{"album":[null,"Wednesday Goth & Indie"],"artist":["New Order","New Order"],"track":["Ceremony (version 1)","Ceremony (version 1)"]},
 		{"album":[null,"Welcome to Wherever You Are"],"artist":["INXS","INXS"],"track":["Not Enough Time","Not Enough Time"]},
 		{"album":[null,"Welcome to the Madhouse (Deluxe)"],"artist":["Tones and I","Tones and I"],"track":["Dance Monkey","Dance Monkey"]},
 		{"album":[null,"What I Like About You (And Other Romantic Hits)"],"artist":["The Romantics","The Romantics"],"track":["One in a Million","One in a Million"]},
@@ -3912,7 +3923,6 @@
 		{"album":[null,"\"Weird Al\" Yankovic"],"artist":["\"Weird Al\" Yankovic","\"Weird Al\" Yankovic"],"track":["Mr. Frump in the Iron Lung","Mr. Frump in the Iron Lung"]},
 		{"album":[null,"\"Weird Al\" Yankovic"],"artist":["\"Weird Al\" Yankovic","\"Weird Al\" Yankovic"],"track":["Such a Groovy Guy","Such a Groovy Guy"]},
 		{"album":[null,"\"Weird Al\" Yankovic"],"artist":["\"Weird Al\" Yankovic","\"Weird Al\" Yankovic"],"track":["The Check's in the Mail","The Check's in the Mail"]},
-		{"album":[null,"City of Angels"],"artist":["Jimi Hendrix","Jimi Hendrix"],"track":["Red House","Red House"]},
 		{"album":[null,"fear"],"artist":["Toad the Wet Sprocket","Toad the Wet Sprocket"],"track":["Hold Her Down","Hold Her Down"]},
 		{"album":[null,"http://Remix.Kwed.Org/"],"artist":["MusicWizard","MusicWizard"],"track":["Commando - HighScore","Commando - HighScore"]},
 		{"album":[null,"lieder der berge"],"artist":["Volksmusik","Volksmusik"],"track":["Ein Tiroler Wollte Jagen","Ein Tiroler Wollte Jagen"]},
@@ -4379,7 +4389,6 @@
 		{"album":[null,"Arcade and the Fiery Metal Tester"],"artist":["Rashad Jennings","Rashad Jennings"],"track":["arcade2","arcade2"]},
 		{"album":[null,"Arcade and the Golden Travel Guide"],"artist":["Rashad Jennings","Rashad Jennings"],"track":["arcade1","arcade1"]},
 		{"album":[null,"Bizarre Love Triangle"],"artist":["New Order","New Order"],"track":["Bizarre Love Triangle (single remix)","Bizarre Love Triangle (single remix)"]},
-		{"album":[null,"Top Gun - Motion Picture Soundtrack (Special Expanded Edition)"],"artist":["Steve Stevens","Steve Stevens"],"track":["Top Gun Anthem","Top Gun Anthem"]},
 		{"album":[null,"Bon Jovi"],"artist":["Bon Jovi","Bon Jovi"],"track":["Runaway","Runaway"]},
 		{"album":[null,"The Best of the Surfaris"],"artist":["The Surfaris","The Surfaris"],"track":["Wipe Out","Wipe Out"]},
 		{"album":[null,"5 Seconds of Summer (Deluxe)"],"artist":["5 Seconds of Summer","5 Seconds of Summer"],"track":["She Looks So Perfect","She Looks So Perfect"]},
@@ -4562,7 +4571,6 @@
 		{"album":[null,"Desolation Boulevard"],"artist":["The Kingsmen","The Kingsmen"],"track":["Louie Louie","Louie Louie"]},
 		{"album":[null,"Van Halen II"],"artist":["Van Halen","Van Halen"],"track":["Dance the Night Away","Dance the Night Away"]},
 		{"album":[null,"Van Halen"],"artist":["Van Halen","Van Halen"],"track":["Eruption","Eruption"]},
-		{"album":[null,"Top Gun"],"artist":["Miami Sound Machine","Miami Sound Machine"],"track":["Hot Summer Nights","Hot Summer Nights"]},
 		{"album":[null,"New York"],"artist":["Lou Reed","Lou Reed"],"track":["Dirty Blvd.","Dirty Blvd."]},
 		{"album":[null,"Sounds of the Universe"],"artist":["Depeche Mode","Depeche Mode"],"track":["Wrong","Wrong"]},
 		{"album":[null,"KANM 19930417 B"],"artist":["The Wonder Stuff","The Wonder Stuff"],"track":["The Size of a Cow","The Size of a Cow"]},
@@ -4891,7 +4899,6 @@
 		{"album":[null,"Best of Blondie"],"artist":["Blondie","Blondie"],"track":["Sunday Girl","Sunday Girl"]},
 		{"album":[null,"The Dylans"],"artist":["The Dylans","The Dylans"],"track":["Ocean Wide","Ocean Wide"]},
 		{"album":[null,"Smallville: the Talon Mix"],"artist":["Five for Fighting","Five for Fighting"],"track":["Superman","Superman"]},
-		{"album":[null,"Krafty"],"artist":["New Order","New Order"],"track":["Krafty - DJ Dan Vocal Remix","Krafty - DJ Dan Vocal Remix"]},
 		{"album":[null,"Guilt Is a Useless Emotion"],"artist":["New Order","New Order"],"track":["Guilt Is a Useless Emotion - Bill Hamel Vocal Mix","Guilt Is a Useless Emotion - Bill Hamel Vocal Mix"]},
 		{"album":[null,"Guilt Is a Useless Emotion"],"artist":["New Order","New Order"],"track":["Guilt Is a Useless Emotion","Guilt Is a Useless Emotion"]},
 		{"album":[null,"The Last of the Mohicans"],"artist":["Trevor Jones & Randy Edelman","Trevor Jones & Randy Edelman"],"track":["Fort Battle","Fort Battle"]},
@@ -6843,7 +6850,6 @@
 
 {"artist":["Elvis Presley"],"album":[null,"Top Ten Hits"],"track":["Hard Headed Woman","Hard Headed Woman"]},
 
-{"album":["city of angels","City of Angels"]},
 
 {"artist":["Los Fabulosos Cadillacs"],"album":["20 Grandes Exitos - 2"],"track":["Manuel Santillan, el Leon (Tumbao)","Manuel Santillán, el León (Tumbao)"]},
 {"artist":["Cure","The Cure"]},
@@ -6955,23 +6961,83 @@
 		      {"album":[null,"20 Grandes Exitos - cassette 1"],"artist":["Los Fabulosos Cadillacs","Los Fabulosos Cadillacs"],"track":["Caballo de Madera","Caballo de Madera"]},
 		      {"album":["The Lion King: Original Motion Picture Soundtrack","The Lion King"], "artist":[null,"Lion King Cast"]},
 		      {"album":["The Lion King","The Lion King"], "artist":[null,"Lion King Cast"]},
-		      {"album":["The Lion King: Original Motion Picture Soundtrack","The Lion King"], "artist":[null,"Lion King Cast"]}
+		      {"album":["The Lion King: Original Motion Picture Soundtrack","The Lion King"], "artist":[null,"Lion King Cast"]},
+		      {"album":["Moana (Original Motion Picture Soundtrack)","Moana"]},
+		      {"album":["Frozen 2 (Original Motion Picture Soundtrack)","Frozen 2"]},
+		      {"artist":[null,"Frozen 2 Cast"],"album":["Frozen 2"]},
+		      {"album":["Disney Karaoke Series: Moana","Moana"]},
+		      {"album":["Here Come the 123's","Here Come the 123s"]},
+		      {"album":[null,"Here Come the 123s"],"artist":["They Might Be Giants","They Might Be Giants"],"track":["Even Numbers","Even Numbers"]},
+		      {"album":[null,"Here Come the 123s"],"artist":["They Might Be Giants","They Might Be Giants"],"track":["I Can Add","I Can Add"]},
+		      {"album":[null,"Here Come the 123s"],"artist":["They Might Be Giants","They Might Be Giants"],"track":["Nine Bowls of Soup","Nine Bowls of Soup"]},
+		      {"album":[null,"Here Come the 123s"],"artist":["They Might Be Giants","They Might Be Giants"],"track":["Mickey Mouse Clubhouse Theme","Mickey Mouse Clubhouse Theme"]},
+		      {"album":[null,"Here Come the 123s"],"artist":["They Might Be Giants","They Might Be Giants"],"track":["Eight Hundred and Thirteen Mile Car Trip","Eight Hundred and Thirteen Mile Car Trip"]},
+		      {"artist":[null,"Moana cast"],"album":["Moana"]},
+		      {"album":["They Might Be Giants: Here Come the ABCs","Here Come the ABCs"]},
+		       {"album":[null,"Then: the Earlier Years"],"artist":["They Might Be Giants","They Might Be Giants"],"track":["We're the Replacements","We're the Replacements"]},
+		       {"artist":["10,000 Maniacs"],"album":["MTV Unplugged"],"track":[null,"$current (MTV Unplugged)"]},
+		       {"artist":["They Might Be Giants"],"album":["Then: the Earlier Years"],"track":["Which Describes How You're Feeling","Which Describes How You're Feeling (demo)"]},
+		       {"album":[null,"Buddha"],"artist":["Blink-182","Blink-182"],"track":["Strings","Strings"], "note":"Different recording, but about same"},
+
+		       {"artist":[null,"John Williams"],"album":["Star Wars Episode IV: a New Hope (Original Motion Picture Soundtrack)","The Best of Boston Pops (Millennium Collection)"],"track":["Star Wars, Episode IV: a New Hope, Film Score","Main Title (Star Wars)"]},
+		       {"artist":[null,"John Williams"],"album":["Thr Best of Boston Pops (Millennium Collection)","The Best of Boston Pops (Millennium Collection)"],"track":["Main Title (Star Wars)","Main Title (Star Wars)"]},
+		       {"artist":["John Williams: Boston Pops Orchestra","John Williams"],"album":["The Best of Boston Pops (Millennium Collection)"],"track":["Main Title (Star Wars)","Main Title (Star Wars)"]},
+		       {"artist":["John Williams"],"album":["John Williams Conducts John Williams","The Best of Boston Pops (Millennium Collection)"],"track":["Star Wars, Episode IV \"A New Hope\": Main Theme","Main Title (Star Wars)"]},
+		       {"artist":[null,"John Williams"],"album":[null,"The Best of Boston Pops (Millennium Collection)"],"track":["Main Title (from \"Star Wars\")","Main Title (Star Wars)"]},
+		       {"artist":[null,"John Williams"],"album":[null,"The Best of Boston Pops (Millennium Collection)"],"track":["Main Title from Star Wars","Main Title (Star Wars)"]},
+		       {"artist":[null,"John Williams"],"album":["Star Wars: a New Hope (Original Motion Picture Soundtrack)","The Best of Boston Pops (Millennium Collection)"],"track":["Main Title","Main Title (Star Wars)"]},
+
+		       {"artist":["Danny Elfman"],"album":["Batman (Film Score), Music from the Films of Tim Burton","Batman"],"track":["Batman, Film Score","Batman Theme"]},
+		       {"artist":["Danny Elfman"],"album":["Batman (Original Motion Picture Score)","Batman"],"track":["The Batman Theme","Batman Theme"]},
+		       {"artist":[null,"Danny Elfman"],"album":["Batman (Film Score), Music from the Films of Tim Burton","Batman"],"track":["Batman, Film Score","Batman Theme"]},
+		{"album":[null,"City of Angels"],"artist":[null,"The Goo Goo Dolls"],"track":["Iris","Iris"]},
+		{"album":[null,"City of Angels"],"artist":["Alanis Morissette","Alanis Morissette"],"track":["Uninvited","Uninvited"]},
+		{"album":[null,"City of Angels"],"artist":["Jude","Jude"],"track":["I Know","I Know"]},
+		{"album":[null,"City of Angels"],"artist":["Paula Cole","Paula Cole"],"track":["Feelin' Love","Feelin' Love"]},
+		{"album":[null,"City of Angels"],"artist":["Sarah McLachlan","Sarah McLachlan"],"track":["Angel","Angel"]},
+		{"album":[null,"City of Angels"],"artist":["Jimi Hendrix","Jimi Hendrix"],"track":["Red House","Red House"]},
 
 
+		{"artist":["Van Halen"],"album":[null,"Live: Right Here, Right Now."],"track":["Ain't Talkin' 'bout Love (live)","Ain't Talkin' 'bout Love (live)"]},
 
 
+		{"album":["Top Gun - Motion Picture Soundtrack (Special Expanded Edition)","Top Gun"]},
+		{"album":["Top Gun Deluxe Edition","Top Gun"]},
+		{"album":["Top Gun Original Motion Picture Soundtrack","Top Gun"]},
+		{"album":["Top Gun - Motion Picture Soundtrack","Top Gun"]},
+
+		{"artist":[null,"Harold Faltermeyer & Steve Stevens"],"album":[null,"Top Gun"],"track":["Top Gun Anthem","Top Gun Anthem"]},
+		{"artist":[null,"Harold Faltermeyer & Steve Stevens"],"album":[null,"Top Gun"],"track":["Top Gun (Anthem)","Top Gun Anthem"]},
+
+		{"album":[null,"Top Gun"],"artist":["Berlin","Berlin"],"track":["Take My Breath Away","Take My Breath Away"]},
+		{"track":["Take My Breath Away - Love Theme from \"Top Gun\"","Take My Breath Away"]},
+		{"track":["Take My Breath Away (Re-Recorded / Remastered)","Take My Breath Away"]},
+		{"track":["Take My Breath Away (Love Theme from \"Top Gun\")","Take My Breath Away"]},
 
 
+		{"album":[null,"Top Gun"],"artist":["Kenny Loggins","Kenny Loggins"],"track":["Danger Zone","Danger Zone"]},
 
 
+		{"album":[null,"John Williams & Steven Spielberg: the Ultimate Collection"],"artist":["John Williams","John Williams"],"track":["Jurassic Park, Film Score","Main Theme (from \"Jurassic Park\")"]},
+		{"artist":["John Williams"],"album":["John Williams & Steven Spielberg: the Ultimate Collection"],"track":["Main Theme (from \"Jurassic Park\")","Main Theme (from \"Jurassic Park\")"]},
+		{"artist":["John Williams"],"album":["John Williams, Jurassic Park: Original Motion Picture Soundtrack"],"track":["Jurassic Park, Film Score","Jurassic Park, Film Score"]},
+		{"artist":["John Williams"],"album":[null,"John Williams & Steven Spielberg: the Ultimate Collection"],"track":["Theme from Jurassic Park - Jurassic Park/Soundtrack version","Main Theme (from \"Jurassic Park\")"]},
+		{"artist":["John Williams"],"album":[null,"John Williams & Steven Spielberg: the Ultimate Collection"],"track":["Jurassic Park Theme","Main Theme (from \"Jurassic Park\")"]},
+		{"artist":["John Williams"],"album":[null,"John Williams & Steven Spielberg: the Ultimate Collection"],"track":["Theme from Jurassic Park","Main Theme (from \"Jurassic Park\")"]},
+		{"artist":["John Williams"],"album":[null,"John Williams & Steven Spielberg: the Ultimate Collection"],"track":["Welcome to Jurassic Park - Jurassic Park/Soundtrack version","Main Theme (from \"Jurassic Park\")"]},
+		{"artist":["Thomas Oliver"],"album":[null,"John Williams & Steven Spielberg: the Ultimate Collection"],"track":["Jurassic Park Theme","Main Theme (from \"Jurassic Park\")"]},
+		{"artist":["John Williams"],"album":[null,"John Williams & Steven Spielberg: the Ultimate Collection"],"track":["Theme from \"Jurassic Park\"","Main Theme (from \"Jurassic Park\")"]},
+		{"artist":["John Williams"],"album":[null,"John Williams & Steven Spielberg: the Ultimate Collection"],"track":["Theme from Jurassic Park - from the \"Jurassic Park\" Soundtrack","Main Theme (from \"Jurassic Park\")"]},
+		{"artist":["John Williams"],"album":[null,"John Williams & Steven Spielberg: the Ultimate Collection"],"track":["Theme (from \"Jurassic Park\")","Main Theme (from \"Jurassic Park\")"]},
 
 
-
-
-
-
-
-
+		{"album":[null,"Greatest Hits Volume One - the Singles"],"artist":["The Goo Goo Dolls","The Goo Goo Dolls"],"track":["Slide","Slide"]},
+		{"album":[null,"Dizzy Up the Girl"],"artist":["The Goo Goo Dolls","The Goo Goo Dolls"],"track":["Black Balloon","Black Balloon"]},
+		{"album":[null,"Top Gun: Maverick (Music from the Motion Picture)"],"artist":["OneRepublic","OneRepublic"],"track":["I Ain't Worried","I Ain't Worried"]},
+		{"album":[null,"Top Gun"],"artist":["Kenny Loggins","Kenny Loggins"],"track":["Playing with the Boys","Playing with the Boys"]},
+		{"album":[null,"Gutterflower"],"artist":["The Goo Goo Dolls","The Goo Goo Dolls"],"track":["Here is Gone","Here is Gone"]},
+		{"album":[null,"Dizzy Up the Girl"],"artist":["The Goo Goo Dolls","The Goo Goo Dolls"],"track":["Broadway","Broadway"]},
+		{"artist":["Shakira"],"album":["Grandes Exitos","Laundry Service"],"track":["Suerte (Whenever Wherever)","Suerte (Whenever, Wherever)"]}
 						 
 						 
 						 
@@ -7030,7 +7096,8 @@
 					"\\s*\\(Voice\\)",
 					" - Single Edit Remastered",
 					"\\s*\\(Remastered \\d{4}\\)",
-					"\\s*\\(Album Version\\)"
+					"\\s*\\(Album Version\\)",
+					"\\s*\\(from \"Top Gun\" Original Soundtrack\\)"
 
 
 
