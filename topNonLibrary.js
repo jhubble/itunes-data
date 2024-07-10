@@ -58,6 +58,7 @@ const readTrackMap = () => {
 	if (trackMap.strip) {
 		Object.keys(trackMap.strip).forEach(k => {
 			trackMap.strip[k] = trackMap.strip[k].map(regex => {
+				console.log("REGEX:",k,regex);
 				return new RegExp(regex, "i");
 			});
 		});
