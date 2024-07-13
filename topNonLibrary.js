@@ -237,6 +237,14 @@ const stripText = (artist, album, name) => {
 	}
 	return {album,artist,name};
 }
+
+const mapped = {
+	artistOnly: [],
+	other: [],
+	noAlbum: []
+}
+
+
 const mapTrack = (artist, album, name) => {
 	// For change section, can have artist, album, and track sections
 	// The sections present will be matched
@@ -268,6 +276,7 @@ const mapTrack = (artist, album, name) => {
 			(!rule.album || rule.album[0] === null || rule.album[0].toUpperCase() === album.toUpperCase())
 		) {
 			DEBUG && console.log("CHANGE",rule,artist,album,name);
+			mapped.other.push(rule);
 			// Intentional != 
 			// If it is not set, or set to null or undefined, we use original value
 			// If it is a value (including blank) we will set
@@ -279,7 +288,9 @@ const mapTrack = (artist, album, name) => {
 	}
 
 	if (mapTree.change.artistOnly[artist.toUpperCase()]) {
+
 		DEBUG && console.log("artist omly map for ",artist.toUpperCase());
+		mapped.artistOnly.push(mapTree.change.artistOnly[artist.toUpperCase()]);
 		({artist, album, name} = mapRule(mapTree.change.artistOnly[artist.toUpperCase()],artist, album, name));
 	}
 
@@ -290,12 +301,70 @@ const mapTrack = (artist, album, name) => {
 
 	const ruleKey = `${artist}\t\t${name}`.toUpperCase();
 	if (mapTree.change.noAlbum[ruleKey]) {
+		mapped.noAlbum.push(mapTree.change.noAlbum[ruleKey]);
 		DEBUG && console.log("artist name map for ",ruleKey);
 		({artist, album, name} = mapRule(mapTree.change.noAlbum[ruleKey],artist, album, name));
 	}
 
 	return {artist,album,name};
 };
+
+const rulesMapped = () => {
+	showDuration("rulesMappedStart");
+	const mapFound = {
+		other:{},
+		noAlbum:{},
+		artistOnly:{}
+	};
+
+
+	mapped.other.forEach(k => {
+		const kj = JSON.stringify(k);
+		if (!mapFound.other[kj]) {
+			mapFound.other[kj] = 0;
+		}
+		mapFound.other[kj]++;
+	});
+
+	mapped.noAlbum.forEach(k => {
+		const kj = JSON.stringify(k);
+		if (!mapFound.noAlbum[kj]) {
+			mapFound.noAlbum[kj] = 0;
+		}
+		mapFound.noAlbum[kj]++;
+	});
+
+	mapped.artistOnly.forEach(k => {
+		const kj = JSON.stringify(k);
+		if (!mapFound.artistOnly[kj]) {
+			mapFound.artistOnly[kj] = 0;
+		}
+		mapFound.artistOnly[kj]++;
+	});
+
+	Object.values(mapTree.change.noAlbum).forEach(k => {
+		const kj = JSON.stringify(k);
+		if (!mapFound.noAlbum[kj]) {
+			console.log("no Album rule not run:",kj);
+		}
+	});
+	Object.values(mapTree.change.artistOnly).forEach(k => {
+		const kj = JSON.stringify(k);
+		if (!mapFound.artistOnly[kj]) {
+			console.log("artist Only rule not run:",kj);
+		}
+	});
+	Object.values(mapTree.change.other).forEach(k => {
+		const kj = JSON.stringify(k);
+		if (!mapFound.other[kj]) {
+			console.log("other rule not run:",kj);
+		}
+	});
+
+	console.log(JSON.stringify(mapFound,null,2));
+	showDuration("rulesMappedEnd");
+}
+
 
 const modify = (artist, album, name) => {
 	if (trackMap?.modify?.all) {
@@ -630,4 +699,5 @@ mostScrobbledArtistAndAlbumNotInLibraryAtAll();
 showMatches();
 showSuggestedMerges();
 notExcluded();
+rulesMapped();
 console.error("done");
