@@ -26,7 +26,10 @@ const trackCache = {};
 const MIN_COUNT = 1;
 
 // Only include songs with last place at least MAX_AGE months
-const MAX_AGE = 2000;
+const MAX_AGE = 12*5*200;
+
+// For album view, only show tracks with at least this many scrobbles
+const MIN_TRACK_SCROBBLES = 1;
 
 let time = Date.now();
 const showDuration = (name) => {
@@ -58,7 +61,7 @@ const readTrackMap = () => {
 	if (trackMap.strip) {
 		Object.keys(trackMap.strip).forEach(k => {
 			trackMap.strip[k] = trackMap.strip[k].map(regex => {
-				console.log("REGEX:",k,regex);
+				DEBUG && console.log("REGEX:",regex);
 				return new RegExp(regex, "i");
 			});
 		});
@@ -101,22 +104,112 @@ const readTrackMap = () => {
 	return trackMap;
 }
 
+const wasExcluded = {
+	excludedArtists: [],
+	excludedAlbumTracks: [],
+	excludedAlbums: [],
+	excludedArtistAlbums: [],
+
+}
+
+const notExcluded = () => {
+	showDuration("start not excluded");
+	const artistMap = {};
+	const albumMap = {};
+	const artAlbMap = {};
+	const albTracks = {};
+	wasExcluded.excludedArtists.forEach(ar => {
+		if (!artistMap[ar]) {
+			artistMap[ar] = 0;
+		}
+		artistMap[ar]++;
+	});
+	Object.keys(mapTree.excludeArtists).forEach(artist => {
+		if (!artistMap[artist.toUpperCase()]) {
+			console.log("Excluded artist not found:",artist);
+		}
+	});
+
+	wasExcluded.excludedAlbums.forEach(al => {
+		if (!albumMap[al]) {
+			albumMap[al] = 0;
+		}
+		albumMap[al]++;
+	});
+	Object.keys(mapTree.excludeAlbums).forEach(album => {
+		if (!albumMap[album.toUpperCase()]) {
+			console.log("Excluded album not found:",album);
+		}
+	});
+
+
+	wasExcluded.excludedArtistAlbums.forEach(al => {
+		const k = JSON.stringify(al);
+		if (!artAlbMap[k]) {
+			artAlbMap[k] = 0;
+		}
+		artAlbMap[k]++;
+	});
+	trackMap.excludeArtistAlbums.forEach(aa => {
+		const k = JSON.stringify(aa);
+		if (!artAlbMap[k]) {
+			console.log("Excluded artist/album not found:",k);
+		}
+	});
+
+	 wasExcluded.excludedAlbumTracks.forEach(k => {
+		if (!albTracks[k]) {
+			albTracks[k] = 0;
+		}
+		albTracks[k]++;
+	 });
+
+	console.log("Matches");
+
+	console.log(JSON.stringify({artistMap,albumMap,artAlbMap,albTracks},null,2));
+
+
+
+	  Object.keys(mapTree.excludeAlbumTracks).forEach(album => {
+		  mapTree.excludeAlbumTracks[album].forEach(track => {
+			  const at = JSON.stringify({album , track});
+			  if (!albTracks[at])  {
+				console.log("Excluded album track not found:",at);
+			  }
+		  });
+         });
+
+
+
+	showDuration("end of not excluded");
+}
+
 
 const isExcluded = (artist, album, name) => {
-	if (mapTree.excludeArtists[(artist||'').toUpperCase()]) {
+	const ucArtist = (artist||'').toUpperCase();
+	if (mapTree.excludeArtists[ucArtist]) {
+		wasExcluded.excludedArtists.push(ucArtist);
 		return true;
 	}
 	if (mapTree.excludeAlbumTracks[album]) {
 		if (mapTree.excludeAlbumTracks[album].indexOf(name) !== -1) {
+			console.log("Alb track match",album,name);
+			wasExcluded.excludedAlbumTracks.push(JSON.stringify({album,track:name}));
 			return true;
 		}
 	}
-	if (mapTree.excludeAlbums[(album||'').toUpperCase()]) {
+	const ucAlbum = (album || '').toUpperCase();
+	if (mapTree.excludeAlbums[ucAlbum]) {
+		wasExcluded.excludedAlbums.push(ucAlbum);
 		return true;
 	}
 	if (trackMap.excludeArtistAlbums) {
 		if (trackMap.excludeArtistAlbums.find(exc => {
-			return (exc.artist === artist && exc.album === album);
+			if (exc.artist === artist && exc.album === album) {
+				wasExcluded.excludedArtistAlbums.push(exc);
+				return true;
+			}
+			return false;
 		})) {
 			return true;
 		}
@@ -343,20 +436,31 @@ const showTopAlbumsAndArtists = () => {
 
 	const albums = {};
 	const artists = {};
+	const recentAlbums = {};
 	Object.keys(scrobbleCounts)
 		.forEach(index => {
 			if (!librarySongs[index]) {
 				const [artist,album,track] = index.split(/\t/);
-				if (!albums[album]) {
-					albums[album] = {}
-					albums[album].count = 0;
-					albums[album].artist = artist;
+				const lastPlayedStamp = scrobbleCounts[index].lastPlayedStamp;
+				if (lastPlayedStamp > minStamp) {
+					if (track) {
+						if (!albums[album]) {
+							albums[album] = {}
+							albums[album].count = 0;
+							albums[album].songCount = 0;
+							albums[album].songs = [];
+							albums[album].artist = artist;
+						}
+						albums[album].count += scrobbleCounts[index].count;
+						albums[album].songCount += 1;
+						albums[album].songs.push({track, artist, count:scrobbleCounts[index].count});
+						if (!artists[artist]) {
+							artists[artist] = 0;
+						}
+						artists[artist] += scrobbleCounts[index].count;
+						
+					}
 				}
-				albums[album].count += scrobbleCounts[index].count;
-				if (!artists[artist]) {
-					artists[artist] = 0;
-				}
-				artists[artist] += scrobbleCounts[index].count;
 			}
 		});
 
@@ -367,7 +471,13 @@ const showTopAlbumsAndArtists = () => {
 
 	sortedKeys.forEach(k => {
 		if (albums[k].count > 5) {
-			console.log(`${albums[k].count} ${k} (${albums[k].artist})`);
+			console.log(`${albums[k].count} ${k} (${albums[k].artist}) - ${albums[k].songCount} songs\t${JSON.stringify({album:k, artist:albums[k].artist})}`);
+			albums[k].songs
+			.filter(s => s.count >= MIN_TRACK_SCROBBLES)
+			.sort((a,b) => b.count-a.count)
+			.forEach(song => {
+				const outJson = {artist:[song.artist],album:[k],track:[song.track]};
+				console.log(`\t\t${song.track}\t${song.count}\t${JSON.stringify(outJson)}`); });
 		}
 	});
 	console.log("\n-------- end ALBUMS");
@@ -519,4 +629,5 @@ showNeverScrobbled();
 mostScrobbledArtistAndAlbumNotInLibraryAtAll();
 showMatches();
 showSuggestedMerges();
+notExcluded();
 console.error("done");
