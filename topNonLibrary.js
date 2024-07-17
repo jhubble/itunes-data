@@ -26,7 +26,7 @@ const trackCache = {};
 const MIN_COUNT = 1;
 
 // Only include songs with last place at least MAX_AGE months
-const MAX_AGE = 12*5*200;
+const MAX_AGE = 12*5*8;
 
 // For album view, only show tracks with at least this many scrobbles
 const MIN_TRACK_SCROBBLES = 1;
@@ -193,7 +193,7 @@ const isExcluded = (artist, album, name) => {
 	}
 	if (mapTree.excludeAlbumTracks[album]) {
 		if (mapTree.excludeAlbumTracks[album].indexOf(name) !== -1) {
-			console.log("Alb track match",album,name);
+			DEBUG && console.log("Alb track match",album,name);
 			wasExcluded.excludedAlbumTracks.push(JSON.stringify({album,track:name}));
 			return true;
 		}
@@ -362,6 +362,22 @@ const rulesMapped = () => {
 	});
 
 	console.log(JSON.stringify(mapFound,null,2));
+
+	console.log("NEW LIST");
+	const change = [];
+	Object.keys(mapFound.artistOnly).forEach(k => {
+		change.push(JSON.parse(k));
+	});
+	Object.keys(mapFound.other).forEach(k => {
+		if (!mapFound.artistOnly[k] && !mapFound.noAlbum[k]) {
+			change.push(JSON.stringify(k));
+		}
+	});
+	Object.keys(mapFound.noAlbum).forEach(k => {
+		change.push(JSON.stringify(k));
+	});
+
+	console.log(JSON.stringify({changes:change},0,2));
 	showDuration("rulesMappedEnd");
 }
 
@@ -691,6 +707,35 @@ const showTopNotInLibrary = () => {
 	});
 }
 
+const showTopScrobbles = () => {
+	Object.keys(scrobbleCounts)
+		.sort((a,b) =>{ return  (scrobbleCounts[b].count - scrobbleCounts[a].count)})
+		.filter(sc => { return scrobbleCounts[sc].count >= 100; })
+		.forEach(sc => {
+			console.log(`${scrobbleCounts[sc].count}\t${scrobbleCounts[sc].lastPlayed}\t${sc}`);
+		});
+}
+
+showLibraryYears = () => {
+	const years = {};
+	Object.keys(librarySongs).forEach(songKey => {
+		const year = librarySongs[songKey].Year;
+		if (!years[year]) {
+			console.log(librarySongs[songKey]);
+			years[year] = 0;
+		}
+		years[year]++;
+	});
+	let lastYear = null;
+	Object.keys(years).sort((a,b) => a-b).forEach(year => {
+		if (lastYear && ((year - lastYear) != 1)) {
+			console.log("GAP!");
+		}
+		console.log(year,years[year]);
+		lastYear = year;
+	});
+}
+
 
 showTopNotInLibrary();
 showTopAlbumsAndArtists();
@@ -698,6 +743,10 @@ showNeverScrobbled();
 mostScrobbledArtistAndAlbumNotInLibraryAtAll();
 showMatches();
 showSuggestedMerges();
-notExcluded();
-rulesMapped();
+if (DEBUG) {
+	notExcluded();
+	rulesMapped();
+}
+showTopScrobbles();
+showLibraryYears();
 console.error("done");
