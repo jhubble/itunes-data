@@ -46,7 +46,7 @@ const noArtistLibrary = {};
 
 let count = 0;			
 
-const mapTree = {excludeArtists:{}, excludeAlbumTracks:{}, excludeAlbums: {}, change: { noAlbum:{}, artistOnly:{}, other:[]}};
+const mapTree = {excludeArtists:{}, excludeTracks: {}, excludeAlbumTracks:{}, excludeAlbums: {}, change: { noAlbum:{}, artistOnly:{}, other:[]}};
 
 
 const outputKey = (key) => {
@@ -74,6 +74,11 @@ const readTrackMap = () => {
 	if (trackMap.excludeAlbums) {
 		trackMap.excludeAlbums.forEach(album => {
 			mapTree.excludeAlbums[album.toUpperCase()] = 1;
+		});
+	}
+	if (trackMap.excludeTracks) {
+		trackMap.excludeTracks.forEach(track => {
+			mapTree.excludeTracks[`${track.artist[0].toUpperCase()}\t${track.album[0].toUpperCase()}\t${track.track[0].toUpperCase()}`] = 1;
 		});
 	}
 	if (trackMap.excludeAlbumTracks) {
@@ -109,15 +114,29 @@ const wasExcluded = {
 	excludedAlbumTracks: [],
 	excludedAlbums: [],
 	excludedArtistAlbums: [],
+	excludedTracks: []
 
 }
 
 const notExcluded = () => {
+	console.log("\n\n== Not excluded\n");
 	showDuration("start not excluded");
 	const artistMap = {};
 	const albumMap = {};
 	const artAlbMap = {};
 	const albTracks = {};
+	const tracksMap = {};
+	wasExcluded.excludedTracks.forEach(ar => {
+		if (!tracksMap[ar]) {
+			tracksMap[ar] = 0;
+		}
+		tracksMap[ar]++;
+	});
+	Object.keys(mapTree.excludeTracks).forEach(track => {
+		if (!tracksMap[track]) {
+			console.log("Excluded track not found:",track);
+		}
+	});
 	wasExcluded.excludedArtists.forEach(ar => {
 		if (!artistMap[ar]) {
 			artistMap[ar] = 0;
@@ -166,7 +185,7 @@ const notExcluded = () => {
 
 	console.log("Matches");
 
-	console.log(JSON.stringify({artistMap,albumMap,artAlbMap,albTracks},null,2));
+	console.log(JSON.stringify({artistMap,albumMap,artAlbMap,albTracks,tracksMap},null,2));
 
 
 
@@ -213,6 +232,15 @@ const isExcluded = (artist, album, name) => {
 		})) {
 			return true;
 		}
+	}
+	if (mapTree.excludeTracks) {
+		const matchString = `${(artist||'').toUpperCase()}\t${(album||'').toUpperCase()}\t${(name||'').toUpperCase()}`;
+		DEBUG && console.log(matchString);
+		if (mapTree.excludeTracks[matchString]) {
+			wasExcluded.excludedTracks.push(matchString);
+			return true;
+		}
+
 	}
 	return false;
 }
@@ -461,6 +489,7 @@ const normalize = (artist,album,name) => {
 }
 
 const showSuggestedMerges = ()=> {
+	console.log("\n\n==SUGGESTED MERGES\n");
 	Object.keys(allTracksWithoutAlbum).forEach(noAlbumKey => {
 		const songsObj = allTracksWithoutAlbum[noAlbumKey];
 		const songs = Object.keys(songsObj);
@@ -507,6 +536,7 @@ const showNeverScrobbled = () => {
 }
 
 const showMatches = () => {
+	console.log("\n\n==Songs scrobbled and in the library\n");
 	// Show matches
 	Object.keys(librarySongs)
 		.forEach(index => {
@@ -524,18 +554,20 @@ const showTopAlbumsAndArtists = () => {
 	const recentAlbums = {};
 	Object.keys(scrobbleCounts)
 		.forEach(index => {
+			const [artist,album,track] = index.split(/\t/);
+			const lastPlayedStamp = scrobbleCounts[index].lastPlayedStamp;
+			if (!albums[album]) {
+				albums[album] = {}
+				albums[album].count = 0;
+				albums[album].songCount = 0;
+				albums[album].songs = [];
+				albums[album].goodSongs = [];
+				albums[album].goodCount = 0
+				albums[album].artist = artist;
+			}
 			if (!librarySongs[index]) {
-				const [artist,album,track] = index.split(/\t/);
-				const lastPlayedStamp = scrobbleCounts[index].lastPlayedStamp;
 				if (lastPlayedStamp > minStamp) {
 					if (track) {
-						if (!albums[album]) {
-							albums[album] = {}
-							albums[album].count = 0;
-							albums[album].songCount = 0;
-							albums[album].songs = [];
-							albums[album].artist = artist;
-						}
 						albums[album].count += scrobbleCounts[index].count;
 						albums[album].songCount += 1;
 						albums[album].songs.push({track, artist, count:scrobbleCounts[index].count});
@@ -547,9 +579,13 @@ const showTopAlbumsAndArtists = () => {
 					}
 				}
 			}
+			else {
+				albums[album].goodCount += scrobbleCounts[index].count;
+				albums[album].goodSongs.push({track, artist, count:scrobbleCounts[index].count});
+			}
 		});
 
-	console.log("\nALBUMS:");
+	console.log("\n==ALBUMS:==");
 	console.log("Albums with at least 5 scrobbles not in library. Representative artist in ()");
 	const sortedKeys = Object.keys(albums).sort((a,b) => albums[b].count - albums[a].count);
 
@@ -557,6 +593,7 @@ const showTopAlbumsAndArtists = () => {
 	sortedKeys.forEach(k => {
 		if (albums[k].count > 5) {
 			console.log(`${albums[k].count} ${k} (${albums[k].artist}) - ${albums[k].songCount} songs\t${JSON.stringify({album:k, artist:albums[k].artist})}`);
+			console.log(`\t${albums[k].goodSongs.length} songs in library`);
 			albums[k].songs
 			.filter(s => s.count >= MIN_TRACK_SCROBBLES)
 			.sort((a,b) => b.count-a.count)
@@ -567,7 +604,7 @@ const showTopAlbumsAndArtists = () => {
 	});
 	console.log("\n-------- end ALBUMS");
 
-	console.log("\nARTISTS:");
+	console.log("\n==ARTISTS:==");
 	console.log("Artists with at least 5 scrobbles not in library");
 	Object.keys(artists).sort((a,b) => artists[b] - artists[a]).forEach(k => {
 		if (artists[k] > 5) {
@@ -611,17 +648,18 @@ const mostScrobbledArtistAndAlbumNotInLibraryAtAll = () => {
 			}
 		});
 
-	console.log("\nTOP TOTALLY MISSING ALBUMS:");
+	console.log("\n==TOP TOTALLY MISSING ALBUMS:==");
 	console.log("Top albums with no representation at all in library. Representative artist in ()");
 	const sortedKeys = Object.keys(missingAlbums).sort((a,b) => missingAlbums[b].count - missingAlbums[a].count).slice(50);
 
 
+	console.log("\n-------- end ALBUMS");
 	sortedKeys.forEach(k => {
 		console.log(`${missingAlbums[k].count} ${k} (${missingAlbums[k].artist})`);
 	});
 	console.log("\n-------- end TOTALLY MISSING ALBUMS");
 
-	console.log("\nTOP TOTALLY MISSING ARTISTS:");
+	console.log("\n==TOP TOTALLY MISSING ARTISTS:==");
 	console.log("Top scrobbled artists that are not in library at all");
 	Object.keys(missingArtists).sort((a,b) => missingArtists[b] - missingArtists[a]).slice(50).forEach(k => {
 		console.log(missingArtists[k],k);
@@ -680,6 +718,7 @@ const minStamp = Date.now() - MAX_AGE*1000*60*60*24*(365/12);
 
 // show scrobbled but not in library
 const showTopNotInLibrary = () => {
+	console.log("\n\n==Top Not in Library==\n");
 	Object.keys(scrobbleCounts).sort((a,b) =>{ return  (scrobbleCounts[b].count - scrobbleCounts[a].count)})
 		.forEach(index => {
 		if (!librarySongs[index]) {
@@ -708,6 +747,7 @@ const showTopNotInLibrary = () => {
 }
 
 const showTopScrobbles = () => {
+	console.log("\n\n==TOP SCROBBLES==\n");
 	Object.keys(scrobbleCounts)
 		.sort((a,b) =>{ return  (scrobbleCounts[b].count - scrobbleCounts[a].count)})
 		.filter(sc => { return scrobbleCounts[sc].count >= 100; })
@@ -717,11 +757,12 @@ const showTopScrobbles = () => {
 }
 
 showLibraryYears = () => {
+	console.log("\n\n==Library years==\n");
 	const years = {};
 	Object.keys(librarySongs).forEach(songKey => {
 		const year = librarySongs[songKey].Year;
 		if (!years[year]) {
-			console.log(librarySongs[songKey]);
+			//console.log(librarySongs[songKey]);
 			years[year] = 0;
 		}
 		years[year]++;
@@ -743,10 +784,8 @@ showNeverScrobbled();
 mostScrobbledArtistAndAlbumNotInLibraryAtAll();
 showMatches();
 showSuggestedMerges();
-if (DEBUG) {
-	notExcluded();
-	rulesMapped();
-}
+notExcluded();
+rulesMapped();
 showTopScrobbles();
 showLibraryYears();
 console.error("done");
