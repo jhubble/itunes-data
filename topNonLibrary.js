@@ -120,7 +120,7 @@ const readTrackMap = () => {
 						album:[match.album[0],Array.isArray(rule.replace.album) ? rule.replace.album[0] : rule.replace.album],
 						track:[match.track[0],Array.isArray(rule.replace.track) ? rule.replace.track[0] : rule.replace.track]
 					}
-					console.log("MULTIPLE RULE: ",newRule);
+					DEBUG && console.log("MULTIPLE RULE: ",newRule);
 					mapTree.change.other.push(newRule);
 				});
 			}
@@ -896,12 +896,14 @@ const songsRemovedFromLibrary = () => {
 	showDuration("songs removed from library");
 }
 
-const showReverseSorted = (name,obj) => {
-	console.log("\n",name);
+const showReverseSorted = (name,obj,min=0) => {
+	console.log(`\nDropped ${name}`);
 	Object.keys(obj)
 		.sort((a,b) => { return obj[b] - obj[a]})
 		.forEach(k => {
-			console.log(` = DROP =\t${obj[k]}\t${k}`);
+			if (obj[k] > min) {
+				console.log(` = DROP ${name}=\t${obj[k]}\t${k}`);
+			}
 		});
 }
 const showTopDrops = () => {
@@ -918,10 +920,10 @@ const showTopDrops = () => {
 		droppedAlbumArtist[`${artist}/${album}`] = (droppedAlbumArtist[`${artist}/${album}`] || 0) +1;
 	});
 
-	showReverseSorted("Dropped Artists",droppedArtists);
-	showReverseSorted("Dropped Albums",droppedAlbums);
-	showReverseSorted("Dropped Tracks",droppedTracks);
-	showReverseSorted("Dropped Artist / Album",droppedAlbumArtist);
+	showReverseSorted("Artists",droppedArtists);
+	showReverseSorted("Albums",droppedAlbums);
+	showReverseSorted("Tracks",droppedTracks,4);
+	showReverseSorted("Artist / Album",droppedAlbumArtist);
 
 	showDuration("show top drops");
 
