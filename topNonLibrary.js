@@ -660,7 +660,7 @@ const showTopAlbumsAndArtists = () => {
 
 	sortedKeys.forEach(k => {
 		if (albums[k].count > 5) {
-			console.log(`= MISING ALBUM =\t${albums[k].count} ${k} (${albums[k].artist}) - ${albums[k].songCount} songs\t${JSON.stringify({album:k, artist:albums[k].artist})}`);
+			console.log(`= MISSING ALBUM =\t${albums[k].count} ${k} (${albums[k].artist}) - ${albums[k].songCount} songs\t${JSON.stringify({album:k, artist:albums[k].artist})}`);
 			console.log(` = MISSING =\t${albums[k].goodSongs.length} songs in library`);
 			albums[k].songs
 			.filter(s => s.count >= MIN_TRACK_SCROBBLES)
@@ -861,6 +861,76 @@ const showTopScrobbles = () => {
 	showDuration("show top scrobbles");
 }
 
+// this is miserably broken
+// itunes seems to have all library embedded here. 
+	// May need to find library to better generate
+const writePlayList = (tracks) => {
+	let out = `
+	<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+		`;
+	tracks.forEach(track => {
+		out += `<key>${track['Track ID']}</key>
+			<dict>`;
+		Object.keys(track).forEach(k => {
+			const v = track[k];
+			out += `<key>${k}</key>`;
+			if (typeof v === 'number') {
+				out += `<integer>${v}</integer>
+					`;
+			}
+			else if (k.indexOf('Date UTC') !== -1) {
+				out += `<date>${v}</date>
+					`;
+			}
+			else if (k.indexOf('Computed') !== -1) {
+				out += `<true/>
+					`;
+			}
+			else out += `<string>${v}</string>
+				`;
+		});
+	});
+	console.log(out);
+}
+
+
+const topByYear = () => {
+	console.log("\n\n==Best Song By Year==\n");
+	const years = {};
+	Object.keys(librarySongs).forEach(songKey => {
+		const year = librarySongs[songKey].Year;
+		const rating = librarySongs[songKey].Rating || 0;
+		const playCount = librarySongs[songKey]['Play Count'] || 0;
+		if (!years[year]) {
+			years[year] = librarySongs[songKey];
+		}
+		else {
+			oldRating = years[year].Rating || 0;
+			oldPlayCount = years[year]['Play Count'] || 0;
+			if (
+			   (rating > oldRating) ||
+			   ((rating === oldRating) && (playCount > oldPlayCount))
+			) {
+				years[year] = librarySongs[songKey];
+			}
+		}
+	});
+	let lastYear = null;
+	const tracks = [];
+	Object.keys(years).sort((a,b) => a-b).forEach(year => {
+		if (lastYear && ((year - lastYear) != 1)) {
+			console.log("GAP!");
+		}
+		tracks.push(years[year]);
+		console.log(`${year}\t${years[year].Name}\t${years[year].Artist}\t${years[year].Rating}\t${years[year]['Play Count']}`);
+		lastYear = year;
+	});
+	//writePlayList(tracks);
+	showDuration("top by year");
+}
+
 const showLibraryYears = () => {
 	console.log("\n\n==Library years==\n");
 	const years = {};
@@ -948,4 +1018,5 @@ showTopScrobbles();
 showLibraryYears();
 songsRemovedFromLibrary();
 showTopDrops();
+topByYear();
 console.error("done");
