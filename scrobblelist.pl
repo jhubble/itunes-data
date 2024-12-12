@@ -1,7 +1,10 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
+use strict;
 #
 # Takes a list of scrabbles in a tab delim list and outputs in something that resembles JSON itunes library with playcount and last played
-# Expects the TSV to have most recent scrobbles first with artist, album, track, scrobble time
+# Get scrobbles from https://lastfm.ghan.nl/export/
+# After downloading as CSV, convert to TSV for spreadsheet, etc.
+# Alternate version Expects the TSV to have most recent scrobbles first with artist, album, track, scrobble time
 #
 # Usage: cat scrobbles.tsv | perl scrobblelist.pl > library.json
 use Data::Dumper;
@@ -10,15 +13,21 @@ my %dates;
 while (<>) {
 	chomp;
 	s/\s*$//;
-	($a,$b,$c,$time) = split (/\t/);
-	$a =~ s/\\'//g;
-	$b =~ s/\\'//g;
-	$c =~ s/\\'//g;
+	my ($uts,$time,$artist,$artist_mbid,$album,$album_mbid,$track,$track_mbid) = split (/\t/);
+	# uncoment to use the simple version outlined above
+	#my ($artist,$album,$track,$time) = split (/\t/);
+	$artist =~ s/\\'//g;
+	$album =~ s/\\'//g;
+	$track =~ s/\\'//g;
+	$artist =~ s/"/\\"/g;
+	$album =~ s/"/\\"/g;
+	$track =~ s/"/\\"/g;
+	$artist =~ s~\\/~\\/~;
 	# Ignore scrobbles with the bogus time
 	if ($time eq "01 Jan 1970 0:00") {
 		next;
 	}
-	my $k = "$a\t$b\t$c";
+	my $k = "$artist\t$album\t$track";
 	if ($index{$k}) {
 		$index{$k}++;
 	}

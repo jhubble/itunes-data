@@ -119,3 +119,65 @@ Expect a tab delim file with Artist, Album, Track, Last Played Time
 use as :
 
 cat scrobbles.tsv | perl scrobblelist.pl >psuedoLibrary.json
+
+# topNonLibrary.js
+
+Find out what you have been listening to that is not in the library
+
+1. Prepare the library files:
+Export iTunes library to home directory and then run:
+node cli.js --tracks lib2.json ~/Library.xml
+cat lib2.json | jq . >newTracksConsol.json
+
+Do the same with an old version of library to newTracsMegaConsol.json
+(You can keep both the same - it just wont tell deleted ones.)
+
+2. Prepare the scrobbles
+Download scrobbles in json format from https://lastfm.ghan.nl/export/
+cat DOWNLOADEDSCROBBLES.json | jq . > scrobbles_pretty.json
+
+3. run the code
+node topNonLibrary.js > output.txt
+
+Error and warning output will appear in console as running.
+Lines starting with DURATION show timing
+
+Output will have the result of different analysis:
+
+==Top Not in Library==
+Scrobbled songs that are not in library, ordered by number of scrobbles
+
+==ALBUMS:==
+Albums with at least 5 scrobbles not in library. Representative artist in ()
+
+==ARTISTS:==
+Artists with at least 5 scrobbles not in library
+
+==Top Never Srobbled==
+Songs with plays in library, but not scrobbles (numbers start with - for library plays)
+May need some tweaking to get scrobbles to properly match
+
+==TOP TOTALLY MISSING ALBUMS:==
+Top albums with no representation at all in library.
+Shows count of scrobbles
+
+==TOP TOTALLY MISSING ARTISTS:==
+Top scrobbled artists that are not in library at all, with scrobble count
+
+==Songs scrobbled and in the library==
+All songs scrobbled and in the library
+
+==SUGGESTED MERGES==
+Show songs that appear on multiple albums to potentially merge
+
+== Not excluded ==
+Items marked to exclude that were not found
+
+==TOP SCROBBLES==
+The top scrobbled songs
+
+==Library years==
+Songs by year (with Gaps identified)
+
+==Tracks Removed From Library== 
+Scrobbles that were not matched due to filters

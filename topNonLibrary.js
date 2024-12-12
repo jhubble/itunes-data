@@ -13,7 +13,8 @@ const osa = require('osa');
 // Run node topNonLibrary.js 
 
 const LIB = "newTracksConsol.json";
-const OLDLIB = "newTracksMegaConsol.json";
+//const OLDLIB = "newTracksMegaConsol.json";
+const OLDLIB = "wholeShebang.json";
 const SCROBBLES = "scrobbles_pretty.json";
 const DEBUG = false;
 const SKIP_MOD= false;
@@ -150,7 +151,7 @@ const readTrackMap = () => {
 
 
 const notExcluded = () => {
-	console.log("\n\n== Not excluded\n");
+	console.log("\n\n== Not excluded ==\n");
 	const artistMap = {};
 	const albumMap = {};
 	const artAlbMap = {};
@@ -554,7 +555,7 @@ const normalize = (artist,album,name) => {
 }
 
 const showSuggestedMerges = ()=> {
-	console.log("\n\n==SUGGESTED MERGES\n");
+	console.log("\n\n==SUGGESTED MERGES==\n");
 	Object.keys(allTracksWithoutAlbum).forEach(noAlbumKey => {
 		const songsObj = allTracksWithoutAlbum[noAlbumKey];
 		const songs = Object.keys(songsObj);
@@ -587,6 +588,7 @@ const showSuggestedMerges = ()=> {
 
 // Show songs in library that were never scrobbled
 const showNeverScrobbled = () => {
+	console.log("\n==Top Never Srobbled==\n");
 	Object.keys(librarySongs)
 		.forEach(index => {
 			if (!librarySongs[index].scrobbles) {
@@ -602,9 +604,9 @@ const showNeverScrobbled = () => {
 }
 
 const showMatches = () => {
-	console.log("\n\n==Songs scrobbled and in the library\n");
+	console.log("\n\n==Songs scrobbled and in the library==\n");
 	// Show matches
-	Object.keys(librarySongs)
+	Object.keys(librarySongs).sort((a,b) => librarySongs[b]['Play Count'] - librarySongs[a]['Play Count'])
 		.forEach(index => {
 			if (librarySongs[index].scrobbles) {
 				console.log(`+${librarySongs[index]['Play Count']}(${librarySongs[index].scrobbles})\t${librarySongs[index]['Play Date UTC']}\t${index}\t${outputKey(index)},`);
@@ -770,12 +772,12 @@ const processScrobbles = () => {
 			}
 		})
 	});
+	console.log(`Scrobble songs: ${Object.keys(scrobbleCounts).length}`);
 	showDuration("processedScrobbles");
 }
 
 const processLibrary = () => {
 	console.log(`Library songs: ${lib.length}`);
-	console.log(`Scrobble songs: ${Object.keys(scrobbleCounts).length}`);
 	lib.forEach(song => {
 		const {songKey, noAlbumKey, noArtistKey, orig} = normalize(song.Artist,song.Album,song.Name);
 		if (songKey) {
@@ -802,15 +804,15 @@ const processLibrary = () => {
 	// Now find items that are deleted from new lib
 	Object.keys(oldLibrarySongs).forEach(songKey => {
 		if (!librarySongs[songKey]) {
-			console.log("Marking for DELETION:",songKey);
-			DEBUG && console.log(':',oldLibrarySongs[songKey]);
+			console.warn("Marking for DELETION:",songKey);
+			DEBUG && console.warn(':',oldLibrarySongs[songKey]);
 			trackCache[songKey] = '';
 			if (oldLibrarySongs[songKey].orig) {
 				oldLibrarySongs[songKey].orig.forEach(o => {
 					trackCache[o] = '';
 					trackCache[oldLibrarySongs[songKey].orig] = '';
-					console.log("Marking for DELETION (orig)",songKey);
-					DEBUG && console.log(songKey);
+					console.warn("Marking for DELETION (orig)",songKey);
+					DEBUG && console.warn(songKey);
 				});
 			}
 		}
@@ -1002,10 +1004,13 @@ const showTopDrops = () => {
 }
 
 showDuration("starting");
+
+console.log("\n\nPROCESSING FILES\n\n");
 const trackMap = readTrackMap();
 readFiles();
 processLibrary();
 processScrobbles();
+console.log("\n\nDONE PROCESSING\n\n");
 showTopNotInLibrary();
 showTopAlbumsAndArtists();
 showNeverScrobbled();
