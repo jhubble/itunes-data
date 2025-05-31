@@ -26,13 +26,13 @@ console.error("starting");
 const trackCache = {};
 
 // Only include songs with at least MIN_COUNT scrobbles
-const MIN_COUNT = 1;
+const MIN_COUNT = 3;
 
-// Only include songs with last place at least MAX_AGE months
-const MAX_AGE = 12*5*8;
+// Only include songs with last play at least MAX_AGE months
+const MAX_AGE = 12*1;
 
 // For album view, only show tracks with at least this many scrobbles
-const MIN_TRACK_SCROBBLES = 1;
+const MIN_TRACK_SCROBBLES = 4;
 
 let time = Date.now();
 
@@ -821,6 +821,24 @@ const processLibrary = () => {
 }
 
 
+// possible books
+const showPossibleBooks = () => {
+	console.log("\n\n==Possible books (title = track) ==\n");
+	Object.keys(scrobbleCounts).sort((a,b) =>{ return  (scrobbleCounts[b].count - scrobbleCounts[a].count)})
+		.forEach(index => {
+		if (!librarySongs[index]) {
+			// Only show those with last played in time frame and minimum number of scrobbles
+			if ((scrobbleCounts[index].count >= MIN_COUNT) && (scrobbleCounts[index].lastPlayedStamp > minStamp)) {
+				[artist,album,track] = index.split(/\t/);
+				if (album === track) {
+					output = `${scrobbleCounts[index].count}\t${scrobbleCounts[index].lastPlayed}\t${index}\t${outputKey(index)},`;
+					console.log(`${output}`);
+				}
+			}
+		}
+	});
+	showDuration("possible books");
+}
 // show scrobbled but not in library
 const showTopNotInLibrary = () => {
 	console.log("\n\n==Top Not in Library==\n");
@@ -1011,6 +1029,7 @@ readFiles();
 processLibrary();
 processScrobbles();
 console.log("\n\nDONE PROCESSING\n\n");
+showPossibleBooks();
 showTopNotInLibrary();
 showTopAlbumsAndArtists();
 showNeverScrobbled();
